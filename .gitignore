@@ -1,0 +1,24 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+
+*.Rproj
+# sf- objects resulting from each criterium
+*.dbf
+*.prj
+*.shp
+*.shx
+# maxent program
+*.bat
+*.jar
+*.sh
+*.txt
+# dirs to ignore
+iii_extend_of_suitable_habitat/env_variables
+iii_extend_of_suitable_habitat/occurrences
+iii_extend_of_suitable_habitat/Presence
+# ignore test stack
+*.tif
+
+#git rm -rf --cached .
