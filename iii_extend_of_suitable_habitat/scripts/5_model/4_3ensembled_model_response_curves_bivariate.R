@@ -1,8 +1,8 @@
-#load biomod
+# load biomod
 library(biomod2)
 
-#load ensemble model
-file.out <- paste0("iii_extend_of_suitable_habitat/Presence/Presence.AllModels.ensemble.models.out")
+# load ensemble model
+file.out <- paste0("Presence/Presence.AllModels.ensemble.models.out")
 if (file.exists(file.out)) {
   myEnsembleModel <- get(load(file.out))
 }
