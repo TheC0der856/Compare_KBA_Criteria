@@ -1,4 +1,5 @@
 library(biomod2)
+setwd("iii_extend_of_suitable_habitat/")
 
 # load model
 file.out <- paste0("Presence/Presence.AllModels.models.out")
@@ -11,7 +12,7 @@ myEnsembleModel <- BIOMOD_EnsembleModeling(
                                   myBiomodModelOut,
                                   models.chosen = "all",
                                   em.by = "all",
-                                  em.algo = c('EMca', 'EMmean', 'EMmedian', 'EMwmean'), 
+                                  em.algo = 'EMca', 
                                   metric.select = "all",
                                   metric.select.thresh = NULL,
                                   metric.select.table = NULL,
@@ -33,6 +34,6 @@ if (!dir.exists("ensemble_model_results")) {
 eval_scores <- get_evaluations(myEnsembleModel)
 write.csv(eval_scores, "ensemble_model_results/evaluation.csv", row.names = TRUE)
 
-bm_PlotEvalMean(bm.out = myEnsembleModel, dataset = 'calibration')
-bm_PlotEvalBoxplot(bm.out = myEnsembleModel, group.by = c('algo', 'algo'))
-# EMca is the best!
+# bm_PlotEvalMean(bm.out = myEnsembleModel, dataset = 'calibration')
+# bm_PlotEvalBoxplot(bm.out = myEnsembleModel, group.by = c('algo', 'algo'))
+# # EMca is the best!
