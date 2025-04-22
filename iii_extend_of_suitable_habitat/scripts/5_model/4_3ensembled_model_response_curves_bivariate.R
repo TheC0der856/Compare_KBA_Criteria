@@ -1,5 +1,6 @@
 # load biomod
 library(biomod2)
+library(ggplot2)
 
 # load ensemble model
 file.out <- paste0("Presence/Presence.AllModels.ensemble.models.out")
@@ -74,9 +75,5 @@ gg <- gg +
   coord_cartesian(expand = FALSE)       # plot shouldn't have a (grey) background
 
 
-
-# load ggplot to save the plot
-library(ggplot2)
-
-ggsave("ensemble_model_results/response_curves_EMcaByROC_bivariate.jpg", plot = gg, width = 14, height = 8, dpi = 300)
+#ggsave("ensemble_model_results/response_curves_EMcaByROC_bivariate.jpg", plot = gg, width = 14, height = 8, dpi = 300)
 ggsave("ensemble_model_results/response_curves_EMcaByROC_bivariate.pdf", plot = gg, width = 14, height = 8)

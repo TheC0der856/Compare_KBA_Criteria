@@ -1,0 +1,46 @@
+# 1. copy the old data into a new folder 
+cp Laborergebnisse23/Ariagona_eigener_Versuch_V1/Demultiplexed_Ari/*.fq combined_analyses/demultiplexed/
+
+# 2. some of the samples have to be renamend
+# samples that have to be renamend, info from "ID5.txt"
+# SG043	T048  v
+# SG072	T021  v
+# SG074	T020  v
+# SG076	T019  -
+# SG083	SG168 v
+# SG099	SG162 v
+# SG117	SG161 -
+# SG128	SG143 v
+# SG161	SG117 -
+# T019	SG076 -
+# T134	SG019 v
+
+# v:
+for file in combined_analyses/demultiplexed/SG043*; do mv "$file" "${file/SG043/T048}"; done
+for file in combined_analyses/demultiplexed/SG072*; do mv "$file" "${file/SG072/T021}"; done
+for file in combined_analyses/demultiplexed/SG074*; do mv "$file" "${file/SG074/T020}"; done
+for file in combined_analyses/demultiplexed/SG083*; do mv "$file" "${file/SG083/SG168}"; done
+for file in combined_analyses/demultiplexed/SG099*; do mv "$file" "${file/SG099/SG162}"; done
+for file in combined_analyses/demultiplexed/SG128*; do mv "$file" "${file/SG128/SG143}"; done
+for file in combined_analyses/demultiplexed/T134*; do mv "$file" "${file/T134/SG019}"; done
+
+# -:
+for file in combined_analyses/demultiplexed/SG076*; do mv "$file" "${file/SG076/SG076f}"; done
+for file in combined_analyses/demultiplexed/SG117*; do mv "$file" "${file/SG117/SG117f}"; done
+for file in combined_analyses/demultiplexed/SG161*; do mv "$file" "${file/SG161/SG161f}"; done
+for file in combined_analyses/demultiplexed/T019*; do mv "$file" "${file/T019/T019f}"; done
+
+for file in combined_analyses/demultiplexed/SG076f*; do mv "$file" "${file/SG076f/T019}"; done
+for file in combined_analyses/demultiplexed/SG117f*; do mv "$file" "${file/SG117f/SG161}"; done
+for file in combined_analyses/demultiplexed/SG161f*; do mv "$file" "${file/SG161f/SG117}"; done
+for file in combined_analyses/demultiplexed/T019f*; do mv "$file" "${file/T019f/SG076}"; done
+
+
+# 3. some of the samples have to be deleted, otherwise the new calculations can not be conducted...
+
+# SG001, SG015, SG018, SG020, SG021, SG022, SG023, SG024, SG025, SG042, SG048, SG066, SG067,  SG068, SG069, SG070, SG071, SG073, SG077, SG078, SG082, SG084, SG096, SG097,
+# SG121, SG123, SG124, SG125, SG126, SG127, SG129, SG136, SG138, SG142, SG144, SG145, SG146, SG148, SG152, SG153, SG157, SG159, SG160, SG163, SG165, SG166, SG167,
+# SG169, T008, T022, T023, T024, T025, T026, T028, T033, T034, T045, T046, T047, T051, T060, T062, T085, T086, T088, T110, T115, T117, T129, T131, T135, T136, T138, T140,
+# T141, T168
+
+rm combined_analyses/demultiplexed/{SG001,SG015,SG018,SG020,SG021,SG022,SG023,SG024,SG025,SG042,SG048,SG066,SG067,SG068,SG069,SG070,SG071,SG073,SG077,SG078,SG082,SG084,SG096,SG097,SG121,SG123,SG124,SG125,SG126,SG127,SG129,SG136,SG138,SG142,SG144,SG145,SG146,SG148,SG152,SG153,SG157,SG159,SG160,SG163,SG165,SG166,SG167,SG169,T008,T022,T023,T024,T025,T026,T028,T033,T034,T045,T046,T047,T051,T060,T062,T085,T086,T088,T110,T115,T117,T129,T131,T135,T136,T138,T140,T141,T168}*

@@ -12,8 +12,8 @@
 # maxent program
 *.bat
 *.jar
-*.sh
-*.txt
+maxent.sh
+readme.txt
 # dirs to ignore
 iii_extend_of_suitable_habitat/env_variables
 iii_extend_of_suitable_habitat/occurrences
