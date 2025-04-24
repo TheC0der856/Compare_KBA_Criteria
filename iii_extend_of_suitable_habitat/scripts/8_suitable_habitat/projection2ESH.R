@@ -23,8 +23,10 @@ suitable_habitat_sf <- st_as_sf(suitable_habitat_poly)
 #all(st_is_valid(suitable_habitat_sf)) # controll if errors happend from the transformation
 
 # find the biggest suitable area
-suitable_habitats_sf <- st_cast(suitable_habitat_sf, "POLYGON")
-selected_suitable_habitat_sf <- suitable_habitats_sf[which.max(st_area(suitable_habitats_sf)), ]
+# suitable_habitats_sf <- st_cast(suitable_habitat_sf, "POLYGON")
+# selected_suitable_habitat_sf <- suitable_habitats_sf[which.max(st_area(suitable_habitats_sf)), ]
+
+# find the suitable area within the selected range
 
 
 # save as shapefile
