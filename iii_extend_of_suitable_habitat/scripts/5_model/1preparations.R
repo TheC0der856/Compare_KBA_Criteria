@@ -5,14 +5,15 @@
 library(biomod2)
 library(terra)
 
+setwd("iii_extend_of_suitable_habitat")
 
 # load data set and variables
-occ_data <- read.csv("occurences/Ariagona_in_env.csv")
+occ_data <- read.csv("occurrences/Ariagona_in_env.csv")
 occ_data$Presence <- 1
 myRespName <- 'Presence'
 myResp <- as.numeric(occ_data[, myRespName])
 myRespXY <- occ_data[, c('X', 'Y')]
-myExpl <- rast("env_variables/stacks/stack_filtered6.tif")
+myExpl <- rast("scripts/test_reduce_stack_size/stack_filtered6_20x20.tif")
 
 # create pseudo absences 
 myResp.PA <- ifelse(myResp == 1, 1, NA)
