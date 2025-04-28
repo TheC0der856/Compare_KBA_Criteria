@@ -7,7 +7,7 @@
 # sf- objects resulting from each criterium
 *.dbf
 *.prj
-*.shp
+*.shp*
 *.shx
 *.cpg
 *.sbn
