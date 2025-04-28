@@ -27,7 +27,8 @@ suitable_habitat_sf <- st_as_sf(suitable_habitat_poly)
 # selected_suitable_habitat_sf <- suitable_habitats_sf[which.max(st_area(suitable_habitats_sf)), ]
 
 # find the suitable area within the selected range
-
+selected_range <- st_read("iv_range/selected_range.shp")
+selected_suitable_habitat_sf <- st_intersection(suitable_habitat_sf, selected_range)
 
 # save as shapefile
 st_write(suitable_habitat_sf, "iii_extend_of_suitable_habitat/suitable_habitat.shp")
