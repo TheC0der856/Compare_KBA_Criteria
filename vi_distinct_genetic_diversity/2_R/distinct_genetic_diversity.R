@@ -68,5 +68,5 @@ B1 <- ratios[ratios >= 10]
 sort(B1, decreasing = TRUE)
 
 # from IDs to areas: create sf
-# unnecessary because protects all
+# unnecessary because protects all, just copy from range & ESH
 
