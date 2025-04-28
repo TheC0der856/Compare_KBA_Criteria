@@ -28,5 +28,6 @@ vi_distinct_genetic_diversity/plink_data
 *.tif
 # ignore resulting plots
 *.pdf
+*.jpg
 
 #git rm -rf --cached .
