@@ -26,5 +26,7 @@ iii_extend_of_suitable_habitat/ensemble_model_results
 vi_distinct_genetic_diversity/plink_data
 # ignore test stack
 *.tif
+# ignore resulting plots
+*.pdf
 
 #git rm -rf --cached .
