@@ -1,10 +1,10 @@
 #!/bin/bash
-#SBATCH -t 1:60:00               # Zeitlimit
-#SBATCH --mem=3000               # 3 GB RAM reserviert
-#SBATCH -J respplot
+#SBATCH -t 1:60:00              # Zeitlimit
+#SBATCH --mem=4000              # 4 GB RAM reserviert
+#SBATCH -J quality_single_models
 #SBATCH --mail-type=END
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=1        # 1 CPUs pro Task
+#SBATCH --cpus-per-task=1       # 1 CPUs pro Task
 
 # go to working directory
 cd /scratch/utr_gronefeld/run_model/
@@ -16,7 +16,7 @@ source ~/.bashrc
 mamba activate R
 
 # run R script
-Rscript code/response_curve_plot_median.R
+Rscript code/single_model_quality.R
 
 
 # deactivate environment
