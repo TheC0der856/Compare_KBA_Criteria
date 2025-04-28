@@ -1,18 +1,23 @@
+# load package
 library(biomod2)
-setwd("iii_extend_of_suitable_habitat/")
+library(doParallel)
 
-# load model
+# load single models
 file.out <- paste0("Presence/Presence.AllModels.models.out")
 if (file.exists(file.out)) {
   myBiomodModelOut <- get(load(file.out))
 }
 
+# select single models
+all_models <- get_built_models(myBiomodModelOut)
+filtered_models <- all_models[!grepl("CTA|SRE", all_models)]
 
+# create ensembled models
 myEnsembleModel <- BIOMOD_EnsembleModeling(
                                   myBiomodModelOut,
-                                  models.chosen = "all",
+                                  models.chosen = filtered_models,
                                   em.by = "all",
-                                  em.algo = 'EMca', 
+                                  em.algo = 'EMca',
                                   metric.select = "all",
                                   metric.select.thresh = NULL,
                                   metric.select.table = NULL,
@@ -21,19 +26,11 @@ myEnsembleModel <- BIOMOD_EnsembleModeling(
                                   var.import = 0,
                                   EMci.alpha = 0.05,
                                   EMwmean.decay = "proportional",
-                                  nb.cpu = 1,
+                                  nb.cpu = 4,
                                   seed.val = 123,
                                   do.progress = TRUE
 )
 
-get_built_models(myEnsembleModel)
-
-if (!dir.exists("ensemble_model_results")) {
-   dir.create("ensemble_model_results")
-}
+# save evaluation scores
 eval_scores <- get_evaluations(myEnsembleModel)
-write.csv(eval_scores, "ensemble_model_results/evaluation.csv", row.names = TRUE)
-
-# bm_PlotEvalMean(bm.out = myEnsembleModel, dataset = 'calibration')
-# bm_PlotEvalBoxplot(bm.out = myEnsembleModel, group.by = c('algo', 'algo'))
-# # EMca is the best!
+write.csv(eval_scores, "evaluation.csv", row.names = TRUE)

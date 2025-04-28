@@ -1,6 +1,7 @@
 #load packages
 library(biomod2)
 library(ggplot2)
+library(reshape2)
 
 #load ensemble model
 file.out <- paste0("iii_extend_of_suitable_habitat/Presence/Presence.AllModels.ensemble.models.out")
