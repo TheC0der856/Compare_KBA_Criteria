@@ -9,6 +9,10 @@
 *.prj
 *.shp
 *.shx
+*.cpg
+*.sbn
+*.sbx
+*.sr.lock
 # maxent program
 *.bat
 *.jar
