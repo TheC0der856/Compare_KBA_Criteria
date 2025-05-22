@@ -24,6 +24,7 @@ iii_extend_of_suitable_habitat/occurrences
 iii_extend_of_suitable_habitat/Presence
 iii_extend_of_suitable_habitat/ensemble_model_results
 vi_distinct_genetic_diversity/plink_data
+vi_distinct_genetic_diversity/clumpak_data
 # ignore test stack
 *.tif
 # ignore resulting plots
