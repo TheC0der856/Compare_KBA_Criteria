@@ -3,11 +3,12 @@
 # load packages
 library("dplyr")
 library("tidyr")
+library("sf")
 
 
 ############################## import data ####################################################
 # population structure
-q_matrix <- read.csv("Clumpak_results/Ariagona/1741606813/K=3/MajorCluster/CLUMPP.files/ClumppIndFile.output", 
+q_matrix <- read.csv("vi_distinct_genetic_diversity/clumpak_data/K=4/MajorCluster/CLUMPP.files/ClumppIndFile.output", 
                      header = FALSE, 
                      sep = "", 
                      fill = TRUE)
@@ -25,7 +26,7 @@ areas <- st_cast(area, "POLYGON")
 
 
 ############################# organize structure results #######################################
-cluster_probs <- q_matrix[, 6:8] # needs to be changed for sure!
+cluster_probs <- q_matrix[, 6:9] 
 colnames(cluster_probs) <- c("Cluster1", "Cluster2", "Cluster3", "Cluster4")
 cluster_probs$id <- specimenID
 prob_col <- c()
@@ -42,7 +43,7 @@ for(ind_number in 1:nrow(cluster_probs)) {
 }
 ind_col <- c()
 for(ind_number in 1:nrow(cluster_probs)) {
-  ind_name <- c(rep(cluster_probs[ind_number, 4], 3)) # needs to be adjusted?
+  ind_name <- c(rep(cluster_probs[ind_number, 5], 3)) 
   ind_col <- c(ind_col, ind_name)
 }
 organised_cluster_probs <- data.frame(id = ind_col, 
