@@ -30,5 +30,6 @@ vi_distinct_genetic_diversity/clumpak_data
 # ignore resulting plots
 *.pdf
 *.jpg
+*.pptx
 
 #git rm -rf --cached .
