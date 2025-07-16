@@ -13,7 +13,7 @@ q_matrix <- read.csv("vi_distinct_genetic_diversity/clumpak_data/K=4/MajorCluste
                      sep = "", 
                      fill = TRUE)
 # IDs of individuals
-specimenID <- read.csv("vi_distinct_genetic_diversity/2_R/populations.str", 
+specimenID <- read.csv("vi_distinct_genetic_diversity/3_R/populations.str", 
                   header = FALSE, 
                   sep = "", 
                   fill = TRUE)
@@ -43,10 +43,10 @@ for(ind_number in 1:nrow(cluster_probs)) {
 }
 ind_col <- c()
 for(ind_number in 1:nrow(cluster_probs)) {
-  ind_name <- c(rep(cluster_probs[ind_number, 5], 3)) 
+  ind_name <- c(rep(cluster_probs[ind_number, 5], 4)) 
   ind_col <- c(ind_col, ind_name)
 }
-organised_cluster_probs <- data.frame(id = ind_col, 
+organised_cluster_probs <- data.frame(specimen_id = ind_col, 
                                       prob = prob_col, 
                                       cluster = cluster_col)
 
@@ -66,41 +66,37 @@ specimens_in_area <- st_join(tidy_coordinates, areas, join = st_within) # assign
 
 ########################### structure results with area coordinates combined ###########################
 coordinate_cluster <- data.frame(
-  coordinate = character(),
+  area_ID = character(),
   Cluster1 = numeric(),
   Cluster2 = numeric(),
   Cluster3 = numeric(),
   Cluster4 = numeric(),
   stringsAsFactors = FALSE
 )
-# which individuals were found at which sites?
-ids_per_coordinates <- aggregate(ID ~ combined_coordinates, data = site_coordinates, FUN = toString)
-specimens_in_area$area_ID
+# add area information to organised_cluster_probs
+organised_cluster_probs <- merge(
+  organised_cluster_probs,
+  specimens_in_area[, c("Specimen_ID", "area_ID")],
+  by.x = "specimen_id",
+  by.y = "Specimen_ID",
+  all.x = TRUE
+)
 # calculate the average of cluster percentages per area 
-for (i in seq(ids_per_coordinates$combined_coordinates)) {
-  coordinate <- unlist(strsplit(ids_per_coordinates[i, "combined_coordinates"], ", "))
-  ids_per_coordinate <- unlist(strsplit(ids_per_coordinates[i, "ID"], ", "))
-  cluster_probs_data <- cluster_probs[cluster_probs$id %in% ids_per_coordinate,  ]
-  average_cluster_probs <- colMeans(cluster_probs_data[,1:4])
-  # save results for every coordinate
-  coordinate_cluster <- rbind(coordinate_cluster ,data.frame(
-    coordinate = coordinate,
-    Cluster1 = average_cluster_probs["Cluster1"],
-    Cluster2 = average_cluster_probs["Cluster2"],
-    Cluster3 = average_cluster_probs["Cluster3"], 
-    Cluster4 = average_cluster_probs["Cluster4"]
-  ))
-}
-# better row names, to avoid confusion
-rownames(coordinate_cluster) <- NULL
-# add another column with the frequency of coordinates for having the possibility to adjust for pie chart size
-#freq_coordinates <- table(site_coordinates$combined_coordinates)
-#coordinate_cluster$freq_coordinates <- freq_coordinates[coordinate_cluster$coordinate]
-# separate coordinates again 
-coordinate_cluster <- coordinate_cluster %>%
-  separate(coordinate, into = c("WGS84_X", "WGS84_Y"), sep = "_", convert = TRUE)
+areaID_cluster <- organised_cluster_probs %>%
+  group_by(area_ID, cluster) %>%
+  summarise(mean_prob = mean(prob), .groups = "drop") %>%
+  pivot_wider(
+    names_from = cluster,
+    values_from = mean_prob,
+    names_prefix = "Cluster"
+  ) %>%
+  replace(is.na(.), 0)
+#add geometry
+coordinate_cluster_sf <- left_join(areas, areaID_cluster, by = "area_ID")
+# add another column with the frequency of coordinates for having the possibility to adjust for pie chart size?
 
 
-## save resulting pie chart table
-write.csv(coordinate_cluster, "structure_pie_charts.csv")
+## save resulting sf
+st_write(coordinate_cluster_sf, "vi_distinct_genetic_diversity/3_R/structure_pie_charts.shp")
+
 
