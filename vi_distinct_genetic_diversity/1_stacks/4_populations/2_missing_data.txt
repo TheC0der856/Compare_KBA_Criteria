@@ -16,7 +16,23 @@ END {
   print "Individual", "Missing", "Total", "MissingRate"
   for (i in ind) {
     rate = missing[i]/total[i]
-    if (rate > 0.2)
+    if (rate > 0.4)
       print ind[i], missing[i], total[i], rate
   }
 }'
+
+# I had to choose a missing rate of 0.4 not to loose cementerio.
+
+##################### save only IDs in the file IDs_2remove.txt
+# than: 
+
+awk 'NR==FNR{a[$1]; next} !($1 in a)' IDs_2remove.txt ID_Pop1.txt > ID_Pop2.txt
+
+
+# testing if ID_Pop2.txt contains the correct rows: 
+head ID_Pop2.txt
+
+wc -l ID_Pop2.txt
+wc -l ID_Pop1.txt
+wc -l IDs_2remove.txt
+

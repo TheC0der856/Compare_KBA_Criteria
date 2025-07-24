@@ -1,0 +1,8 @@
+# remove first 2 rows
+sed '1,2d' populations.structure > populations_cleaned.structure
+
+# find NUMINDS:
+wc -l populations_cleaned.structure
+# result : 2 = NUMINDS
+
+# open populations.log  to find NUMLOCI = variant sites remained

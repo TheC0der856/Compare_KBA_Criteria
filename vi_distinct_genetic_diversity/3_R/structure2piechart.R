@@ -13,11 +13,12 @@ q_matrix <- read.csv("vi_distinct_genetic_diversity/clumpak_data/K=4/MajorCluste
                      sep = "", 
                      fill = TRUE)
 # IDs of individuals
-specimenID <- read.csv("vi_distinct_genetic_diversity/3_R/populations.str", 
+specimenID <- read.csv("vi_distinct_genetic_diversity/3_R/populations.structure", 
                   header = FALSE, 
                   sep = "", 
                   fill = TRUE)
-specimenID <- unique(specimenID$V1[-1])
+specimenID <- unique(specimenID$V1[-1]) # don't include Stacks description
+specimenID <- unique(specimenID[-1]) # don't include header
 # coordinates
 coordinates <- read.csv("iii_extend_of_suitable_habitat/occurrences/Ariagona_margaritae_Alles.csv")
 area <- st_read("iv_range/range.shp")
@@ -57,7 +58,8 @@ coordinates$WGS84_X <- as.numeric(gsub(",", ".", coordinates$WGS84_X))
 coordinates$WGS84_Y <- as.numeric(gsub(",", ".", coordinates$WGS84_Y))
 coordinates_filtered <- coordinates[coordinates$Specimen_ID %in% specimenID, ] # removes rows without a matching individual
 coordinates_ordered <- coordinates_filtered[match(specimenID, coordinates_filtered$Specimen_ID), ] # same order like in individual
-coordinates_sf <- st_as_sf(coordinates_ordered, coords = c("WGS84_X", "WGS84_Y"), crs = 4326) 
+coordinates_clean <- coordinates_ordered[!is.na(coordinates_ordered$WGS84_X) & !is.na(coordinates_ordered$WGS84_Y), ] # avoid mistake because NA
+coordinates_sf <- st_as_sf(coordinates_clean, coords = c("WGS84_X", "WGS84_Y"), crs = 4326) 
 coordinates_matching_coordinatesystem <- st_transform(coordinates_sf, crs = st_crs(areas)) # match coordinate systems
 tidy_coordinates <- coordinates_matching_coordinatesystem %>% # remove unnecessary information
   dplyr::select(Specimen_ID, geometry)
