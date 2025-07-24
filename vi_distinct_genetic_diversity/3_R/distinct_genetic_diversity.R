@@ -74,6 +74,17 @@ B1 <- ratios[ratios >= 10]
 
 sort(B1, decreasing = TRUE)
 
+# 7 east Anaga
+# 6 west Anaga
+# 5 Lagunetas
+# 4 Teno
+# 3 La Gomera
+# 2 El Hierro east
+# 1 El Hierro center & west
+
+
 # from IDs to areas: create sf
 # unnecessary because protects all, just copy from range & ESH
 
+# 7        6        2        1        3        4        5 
+# 14.46331 14.34920 14.34644 14.23557 14.21091 14.20368 14.19090 
