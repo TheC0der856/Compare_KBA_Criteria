@@ -32,6 +32,6 @@ vi_distinct_genetic_diversity/clumpak_data
 *.jpg
 *.pptx
 # ignore structure results
-*.structure
+*.str*
 
 #git rm -rf --cached .
