@@ -14,7 +14,7 @@ source ~/.bashrc
 conda activate Structure_threader
 
 # run STRUCTURE with Structure_threader
-structure_threader run  -K 5 -R 20 -i populations_cleaned.structure -t 20 -o output9 -st ~/mambaforge-pypy3/envs/structure/bin/structure --seed 1234 --params mainparams9.txt
+structure_threader run  -K 5 -R 20 -i populations_cleaned.structure -t 20 -o results -st ~/mambaforge-pypy3/envs/structure/bin/structure --seed 1234 --params mainparams100b1000r.txt
 
 # deactivate environment
 conda deactivate
