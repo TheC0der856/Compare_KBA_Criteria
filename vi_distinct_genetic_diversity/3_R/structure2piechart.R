@@ -44,7 +44,7 @@ for(ind_number in 1:nrow(cluster_probs)) {
 }
 ind_col <- c()
 for(ind_number in 1:nrow(cluster_probs)) {
-  ind_name <- c(rep(cluster_probs[ind_number, 5], 4)) 
+  ind_name <- c(rep(cluster_probs[ind_number, "id"], 4)) 
   ind_col <- c(ind_col, ind_name)
 }
 organised_cluster_probs <- data.frame(specimen_id = ind_col, 
