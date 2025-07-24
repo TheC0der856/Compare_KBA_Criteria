@@ -4,12 +4,15 @@ library(vegan)    #Delta+
 library(sf)       #load areas
 library(dplyr)
 
+# copy .structure file and change file ending into .stru
+# delete the first row
 # load genetic data
-genetic_info <- read.structure("vi_distinct_genetic_diversity/2_R/populations.str") 
-355
-6435 
+# load genetic data
+genetic_info <- read.structure("vi_distinct_genetic_diversity/3_R/populations.stru") 
+366
+4988 
 1
-0
+2
 
 1
 n
@@ -19,6 +22,9 @@ n
 genetic_info_0 <- tab(genetic_info)
 genetic_info_0[genetic_info_0 == 0] <- NA
 genetic_info_NA <- genind(genetic_info_0, pop = pop(genetic_info))
+# remove outgroup
+genetic_info_NA <- genetic_info_NA[!genetic_info_NA$pop %in% c("out1", "out2"), ]
+
 
 # add populations!
 # load data:
@@ -31,7 +37,8 @@ coordinates$WGS84_X <- as.numeric(gsub(",", ".", coordinates$WGS84_X))
 coordinates$WGS84_Y <- as.numeric(gsub(",", ".", coordinates$WGS84_Y))
 coordinates_filtered <- coordinates[coordinates$Specimen_ID %in% individual, ] # removes rows without a matching individual
 coordinates_ordered <- coordinates_filtered[match(individual, coordinates_filtered$Specimen_ID), ] # same order like in individual
-coordinates_sf <- st_as_sf(coordinates_ordered, coords = c("WGS84_X", "WGS84_Y"), crs = 4326)   
+coordinates_clean <- coordinates_ordered[!is.na(coordinates_ordered$WGS84_X) & !is.na(coordinates_ordered$WGS84_Y), ] # avoid mistake because NA
+coordinates_sf <- st_as_sf(coordinates_clean, coords = c("WGS84_X", "WGS84_Y"), crs = 4326) 
 coordinates_matching_coordinatesystem <- st_transform(coordinates_sf, crs = st_crs(areas))
 tidy_coordinates <- coordinates_matching_coordinatesystem %>%
                     dplyr::select(Specimen_ID, geometry)

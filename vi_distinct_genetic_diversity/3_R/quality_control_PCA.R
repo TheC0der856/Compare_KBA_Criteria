@@ -27,12 +27,14 @@ runPLINK <- function(PLINKoptions = "") {
   system(paste('"C:/Program Files/plink_win64_20241022/plink"', PLINKoptions))
 }
 
+# copy .structure file and change file ending into .stru
+# delete the first row
 # load genetic data
-genetic_info <- read.structure("vi_distinct_genetic_diversity/2_R/populations.str") 
-355
-6435 
+genetic_info <- read.structure("vi_distinct_genetic_diversity/3_R/populations.stru") 
+366
+4988 
 1
-0
+2
 
 1
 n
@@ -49,6 +51,12 @@ population_year <- ifelse(population == "successfull", "2023", "2025")
 # add population
 pop(genetic_info ) <- as.factor(population_year)
 
+# remove outgroup
+# Identify non-NA population indices
+valid_indices <- !is.na(pop(genetic_info))
+# Subset the genind object to include only individuals with valid population info
+genetic_info <- genetic_info[valid_indices, ]
+
 # path were plink files should be saved
 setwd("vi_distinct_genetic_diversity/plink_data")
 
@@ -57,11 +65,11 @@ genomic_converter(genetic_info, output= "plink")
 
 # rename files
 list.files()
-file.rename("02_radiator_genomic_converter_20250423@1742", "Ariagona_plink")
+file.rename("02_radiator_genomic_converter_20250724@1441", "Ariagona_plink")
 setwd("Ariagona_plink")
 list.files()
-file.rename("radiator_data_20250423@1742.tfam", "Ariagona.tfam")
-file.rename("radiator_data_20250423@1742.tped", "Ariagona.tped")
+file.rename("radiator_data_20250724@1441.tfam", "Ariagona.tfam")
+file.rename("radiator_data_20250724@1441.tped", "Ariagona.tped")
 
 # create directory for results
 dir.create("results")
