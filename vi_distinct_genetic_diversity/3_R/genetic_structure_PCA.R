@@ -1,4 +1,4 @@
-# compare 2023 and 2024 lab data
+# PCA locations and genetic structure
 
 # packages:
 if (!requireNamespace("adegenet", quietly = TRUE)) {
@@ -30,32 +30,30 @@ runPLINK <- function(PLINKoptions = "") {
 # copy .structure file and change file ending into .stru
 # delete the first row
 # load genetic data
-genetic_info <- read.structure("vi_distinct_genetic_diversity/3_R/populations.stru") 
-366
+genetic_info <- read.structure("vi_distinct_genetic_diversity/3_R/populations_cleaned.stru") 
+364
 4988 
 1
 2
 
-1
+0
 n
 
-# add "pop" : two groups -> 2023 and 2025
+# add "pop" : four groups -> Islands, Tenerife two structures
 # load data
 individual <- indNames(genetic_info)
-year <- read.csv("iii_extend_of_suitable_habitat/occurrences/Ariagona_margaritae_Alles.csv")
-# sort year data
-year_reduced <- year[year$Specimen_ID %in% individual, ] # removes rows without a matching individual
-year_ordered <- year_reduced[match(individual, year_reduced$Specimen_ID), ] # same order like in individual
-population <- year_ordered$should.be.sequenced.
-population_year <- ifelse(population == "successfull", "2023", "2025")
+islands_data <- read.csv("iii_extend_of_suitable_habitat/occurrences/Ariagona_margaritae_Alles.csv")
+# sort data
+islands_data_reduced <- islands_data_reduced <- islands_data[islands_data$Specimen_ID %in% individual, ] # removes rows without a matching individual
+islands_data_ordered <- islands_data_reduced[match(individual, islands_data_reduced$Specimen_ID), ] # same order like in individual
+population <- islands_data_ordered$Island
+#islands_data_ordered$Place_Name # 136 starts west
+cut <- 136
+population[population == "Tenerife" & seq_along(population) < cut] <- "east_Tenerife"
+population[population == "Tenerife" & seq_along(population) >= cut] <- "west_Tenerife"
 # add population
-pop(genetic_info ) <- as.factor(population_year)
+pop(genetic_info ) <- as.factor(population)
 
-# remove outgroup
-# Identify non-NA population indices
-valid_indices <- !is.na(pop(genetic_info))
-# Subset the genind object to include only individuals with valid population info
-genetic_info <- genetic_info[valid_indices, ]
 
 # path were plink files should be saved
 setwd("vi_distinct_genetic_diversity/plink_data")
@@ -65,26 +63,26 @@ genomic_converter(genetic_info, output= "plink")
 
 # rename files
 list.files()
-file.rename("02_radiator_genomic_converter_20250724@1441", "quality_control_years")
-setwd("Ariagona_plink")
+file.rename("02_radiator_genomic_converter_20250728@1351", "genetic_structure_PCA")
+setwd("genetic_structure_PCA")
 list.files()
-file.rename("radiator_data_20250724@1441.tfam", "quality_control_years.tfam")
-file.rename("radiator_data_20250724@1441.tped", "quality_control_years.tped")
+file.rename("radiator_data_20250728@1351.tfam", "genetic_structure_PCA.tfam")
+file.rename("radiator_data_20250728@1351.tped", "genetic_structure_PCA.tped")
 
 # create directory for results
 dir.create("results")
-runPLINK("--tfile quality_control_years --pca --out results/quality_control_years")
+runPLINK("--tfile genetic_structure_PCA --pca --out results/genetic_structure_PCA")
 
 # load results into R
-eigenValues <- read_delim("results/quality_control_years.eigenval", delim = " ", col_names = F)
-eigenVectors <- read_delim("results/quality_control_years.eigenvec", delim = " ", col_names = F)
+eigenValues <- read_delim("results/genetic_structure_PCA.eigenval", delim = " ", col_names = F)
+eigenVectors <- read_delim("results/genetic_structure_PCA.eigenvec", delim = " ", col_names = F)
 eigen_percent <- round((eigenValues/ (sum(eigenValues))*100), 2)
 
 # create a plot
 PCAplot <- ggplot(data = eigenVectors)  +
   geom_point(mapping = aes(x = X3, y = X4, color = factor(X1), shape = factor(X1)), size = 2, show.legend = TRUE) +
-  scale_color_manual(values = c("2023" = "goldenrod", "2025" = "cadetblue")) + 
-  scale_shape_manual(values = c("2023" = 16, "2025" = 16)) +                     
+  scale_color_manual(values = c("east_Tenerife" = "goldenrod", "west_Tenerife" = "cadetblue", "La_Gomera" = "palegreen4", "El_Hierro" = "tan4")) + 
+  scale_shape_manual(values = c("east_Tenerife" = 16, "west_Tenerife" = 16, "La_Gomera" = 16, "El_Hierro" = 16 )) +                     
   geom_hline(yintercept = 0, linetype = "dotted") +
   geom_vline(xintercept = 0, linetype = "dotted") + 
   labs(
