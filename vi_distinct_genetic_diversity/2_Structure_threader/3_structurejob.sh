@@ -1,9 +1,10 @@
 #!/bin/bash
 #SBATCH -J Structure
+#SBATCH --nodes=1
 #SBATCH --ntasks 20
 #SBATCH --cpus-per-task=1
 #SBATCH --time=5-00:00:00
-#SBATCH --mem=8G
+#SBATCH --mem=32G
 #SBATCH --mail-type=END
 
 # go to working directory
