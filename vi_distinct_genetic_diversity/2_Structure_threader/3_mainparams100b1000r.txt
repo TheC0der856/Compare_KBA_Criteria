@@ -13,7 +13,7 @@ INFILE should be defined in the command line (-i)
 
 Data file format
 NUMINDS can be defined in the command line (-N)
-#define NUMINDS 366
+#define NUMINDS 364
 NUMLOCI can be deined in the command line (-L)
 #define NUMLOCI 4988
 #define PLOIDY 2
