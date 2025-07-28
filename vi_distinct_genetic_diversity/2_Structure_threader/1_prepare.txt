@@ -1,5 +1,20 @@
+############################ remove headers ############################
 # remove first 2 rows
 sed '1,2d' populations.structure > populations_cleaned.structure
+
+
+############################ remove outgroup ###########################
+# remove outgroup -> otherwise the number of K is not correct
+grep -vi 'out' populations_cleaned.structure > populations_cleaned2.structure
+# controll: 4 rows should be removed
+wc -l populations_cleaned.structure
+wc -l populations_cleaned2.structure
+
+# lets just have one file called populations_cleaned.structure to keep it simple
+mv populations_cleaned2.structure populations_cleaned.structure
+
+
+############################ find mainparams ###########################
 
 # find NUMINDS:
 wc -l populations_cleaned.structure
