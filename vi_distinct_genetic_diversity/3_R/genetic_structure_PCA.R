@@ -81,7 +81,7 @@ eigen_percent <- round((eigenValues/ (sum(eigenValues))*100), 2)
 # create a plot
 PCAplot <- ggplot(data = eigenVectors)  +
   geom_point(mapping = aes(x = X3, y = X4, color = factor(X1), shape = factor(X1)), size = 2, show.legend = TRUE) +
-  scale_color_manual(values = c("east_Tenerife" = "goldenrod", "west_Tenerife" = "cadetblue", "La_Gomera" = "palegreen4", "El_Hierro" = "tan4")) + 
+  scale_color_manual(values = c("east_Tenerife" = "goldenrod", "west_Tenerife" = "cadetblue", "La_Gomera" = "palegreen", "El_Hierro" = "tan4")) + 
   scale_shape_manual(values = c("east_Tenerife" = 16, "west_Tenerife" = 16, "La_Gomera" = 16, "El_Hierro" = 16 )) +                     
   geom_hline(yintercept = 0, linetype = "dotted") +
   geom_vline(xintercept = 0, linetype = "dotted") + 
