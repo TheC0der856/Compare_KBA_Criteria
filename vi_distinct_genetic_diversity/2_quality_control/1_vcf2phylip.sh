@@ -13,4 +13,5 @@ cd /scratch/utr_gronefeld/combined_analyses/populations
 /home/utr_gronefeld/vcf2phylip/vcf2phylip.py -i populations.snps.vcf
 
 
-# This is good for SplitsTree, but a tree can be calculated with the phylip file directly as well.
+# This is good for SplitsTree.
+# Search for missmatch in islands
