@@ -18,7 +18,7 @@ mamba activate Stacks
 # calculation
 # --fstats was not calculated here, because to many files
 # --phylip was not calculated here, because it is better to use vcf2phylip
-populations -M popmaps/ID_Pop1.txt -P denovomap/calculated_files2 -t 12 -O populations  --vcf --genepop --structure --plink -p 26 -r 0.8 --min-maf 0.05 --write-single-snp
+populations -M popmaps/ID_Pop1.txt -P denovomap/calculated_files2 -t 12 -O populations  --vcf --genepop --structure --plink -p 25 -r 0.8 --min-maf 0.05 --write-single-snp
 
 # deactivate environment
 mamba deactivate

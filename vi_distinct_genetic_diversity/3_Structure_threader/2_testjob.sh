@@ -4,7 +4,7 @@
 #SBATCH --ntasks 20
 #SBATCH --cpus-per-task=1
 #SBATCH --time=1-00:00:00
-#SBATCH --mem=8G
+#SBATCH --mem=4G
 #SBATCH --mail-type=END
 
 # go to working directory
