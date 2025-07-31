@@ -30,9 +30,9 @@ runPLINK <- function(PLINKoptions = "") {
 # copy .structure file and change file ending into .stru
 # delete the first row
 # load genetic data
-genetic_info <- read.structure("vi_distinct_genetic_diversity/3_R/populations_cleaned.stru") 
-348
-6303 
+genetic_info <- read.structure("vi_distinct_genetic_diversity/2_quality_control/dataset/populations_cleaned.stru") 
+360
+5321 
 1
 2
 
@@ -63,19 +63,19 @@ genomic_converter(genetic_info, output= "plink")
 
 # rename files
 list.files()
-file.rename("02_radiator_genomic_converter_20250730@2022", "genetic_structure_PCA")
-setwd("genetic_structure_PCA")
+file.rename("01_radiator_genomic_converter_20250731@1138", "genetic_structure")
+setwd("genetic_structure")
 list.files()
-file.rename("radiator_data_20250730@2022.tfam", "genetic_structure_PCA.tfam")
-file.rename("radiator_data_20250730@2022.tped", "genetic_structure_PCA.tped")
+file.rename("radiator_data_20250731@1138.tfam", "genetic_structure.tfam")
+file.rename("radiator_data_20250731@1138.tped", "genetic_structure.tped")
 
 # create directory for results
 dir.create("results")
-runPLINK("--tfile genetic_structure_PCA --pca --out results/genetic_structure_PCA")
+runPLINK("--tfile genetic_structure --pca --out results/genetic_structure")
 
 # load results into R
-eigenValues <- read_delim("results/genetic_structure_PCA.eigenval", delim = " ", col_names = F)
-eigenVectors <- read_delim("results/genetic_structure_PCA.eigenvec", delim = " ", col_names = F)
+eigenValues <- read_delim("results/genetic_structure.eigenval", delim = " ", col_names = F)
+eigenVectors <- read_delim("results/genetic_structure.eigenvec", delim = " ", col_names = F)
 eigen_percent <- round((eigenValues/ (sum(eigenValues))*100), 2)
 
 # create a plot
@@ -105,7 +105,7 @@ PCAplot <- ggplot(data = eigenVectors)  +
 # save plot 
 setwd("..")
 
-ggsave("PCA.jpg", 
+ggsave("genetic_structure_PCA.jpg", 
        plot = PCAplot, 
        width =  11.69, 
        height = 8.27, 
