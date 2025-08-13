@@ -31,8 +31,8 @@ runPLINK <- function(PLINKoptions = "") {
 # delete the first row
 # load genetic data
 genetic_info <- read.structure("vi_distinct_genetic_diversity/2_quality_control/dataset/populations_cleaned.stru") 
-360
-5321 
+358
+5331 
 1
 2
 
@@ -63,11 +63,11 @@ genomic_converter(genetic_info, output= "plink")
 
 # rename files
 list.files()
-file.rename("01_radiator_genomic_converter_20250731@1138", "genetic_structure")
+file.rename("02_radiator_genomic_converter_20250813@1453", "genetic_structure")
 setwd("genetic_structure")
 list.files()
-file.rename("radiator_data_20250731@1138.tfam", "genetic_structure.tfam")
-file.rename("radiator_data_20250731@1138.tped", "genetic_structure.tped")
+file.rename("radiator_data_20250813@1453.tfam", "genetic_structure.tfam")
+file.rename("radiator_data_20250813@1453.tped", "genetic_structure.tped")
 
 # create directory for results
 dir.create("results")
