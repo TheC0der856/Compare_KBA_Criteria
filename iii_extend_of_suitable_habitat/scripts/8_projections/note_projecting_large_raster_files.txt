@@ -1,0 +1,20 @@
+"Yes, unfortunately once limitation is the projection over very large raster files.
+Here are some tips that might help you getting your projection without having to upscale them :
+
+    try the keep.in.memory and do.stack parameters when using the BIOMOD_Projection and BIOMOD_EnsembleForecasting functions
+    divide your projection area into several tiles to project on those separate parts, and recombine the outputs afterwards :
+
+stk.init = stk ## my projection raster
+stk.div = makeTiles(stk.init, ncol(stk.init)/2) ## divide in several parts
+stk.div = list.files(pattern = ".tif") ## get corresponding created filenames
+
+for (fi in stk.div[1:length(stk.div)]) {
+  stk.fi = rast(fi)
+  bm.for = BIOMOD_EnsembleForecasting(bm.em = bm.em
+                                      , proj.name = paste0("CURRENT_", sub(".tif", "", fi))
+                                      , new.env = stk.fi ## project on each part
+                                      , do.stack = FALSE)
+}
+## use vrt() to recombine projected layers"
+
+E-mail from Maya Guéguen
