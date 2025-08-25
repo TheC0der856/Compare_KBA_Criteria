@@ -15,7 +15,7 @@ Data file format
 NUMINDS can be defined in the command line (-N)
 #define NUMINDS 364
 NUMLOCI can be deined in the command line (-L)
-#define NUMLOCI 4988
+#define NUMLOCI 5414
 #define PLOIDY 2
 #define MISSING 0
 #define ONEROWPERIND 0
