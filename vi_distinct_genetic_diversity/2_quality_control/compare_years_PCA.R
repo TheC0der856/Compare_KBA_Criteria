@@ -30,13 +30,13 @@ runPLINK <- function(PLINKoptions = "") {
 # copy .structure file and change file ending into .stru
 # delete the first row
 # load genetic data
-genetic_info <- read.structure("vi_distinct_genetic_diversity/3_R/populations.stru") 
-366
-4988 
+genetic_info <- read.structure("vi_distinct_genetic_diversity/2_quality_control/dataset/populations_cleaned.stru") 
+364
+5414 
 1
 2
 
-1
+0
 n
 
 # add "pop" : two groups -> 2023 and 2025
@@ -65,11 +65,11 @@ genomic_converter(genetic_info, output= "plink")
 
 # rename files
 list.files()
-file.rename("02_radiator_genomic_converter_20250724@1441", "quality_control_years")
-setwd("Ariagona_plink")
+file.rename("02_radiator_genomic_converter_20250825@1247", "quality_control_years")
+setwd("quality_control_years")
 list.files()
-file.rename("radiator_data_20250724@1441.tfam", "quality_control_years.tfam")
-file.rename("radiator_data_20250724@1441.tped", "quality_control_years.tped")
+file.rename("radiator_data_20250825@1247.tfam", "quality_control_years.tfam")
+file.rename("radiator_data_20250825@1247.tped", "quality_control_years.tped")
 
 # create directory for results
 dir.create("results")
@@ -107,7 +107,7 @@ PCAplot <- ggplot(data = eigenVectors)  +
 # save plot 
 setwd("..")
 
-ggsave("PCA.jpg", 
+ggsave("years.jpg", 
        plot = PCAplot, 
        width =  11.69, 
        height = 8.27, 
