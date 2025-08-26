@@ -8,17 +8,15 @@ library("sf")
 
 ############################## import data ####################################################
 # population structure
-q_matrix <- read.csv("vi_distinct_genetic_diversity/clumpak_data/K=4/MajorCluster/CLUMPP.files/ClumppIndFile.output", 
+q_matrix <- read.csv("vi_distinct_genetic_diversity/clumpak_data/K=4/MinorCluster1/CLUMPP.files/ClumppIndFile.output", 
                      header = FALSE, 
                      sep = "", 
                      fill = TRUE)
 # IDs of individuals
-specimenID <- read.csv("vi_distinct_genetic_diversity/3_R/populations.structure", 
-                  header = FALSE, 
-                  sep = "", 
-                  fill = TRUE)
-specimenID <- unique(specimenID$V1[-1]) # don't include Stacks description
-specimenID <- unique(specimenID[-1]) # don't include header
+stru <- read.table("vi_distinct_genetic_diversity/2_quality_control/dataset/populations_cleaned.stru",
+                   header = FALSE, stringsAsFactors = FALSE)
+ind_ids <- stru[,1]
+specimenID <- unique(ind_ids)
 # coordinates
 coordinates <- read.csv("iii_extend_of_suitable_habitat/occurrences/Ariagona_margaritae_Alles.csv")
 area <- st_read("iv_range/range.shp")
@@ -29,7 +27,7 @@ areas <- st_cast(area, "POLYGON")
 ############################# organize structure results #######################################
 cluster_probs <- q_matrix[, 6:9] 
 colnames(cluster_probs) <- c("Cluster1", "Cluster2", "Cluster3", "Cluster4")
-cluster_probs$id <- specimenID
+cluster_probs$id <- unique(specimenID)
 prob_col <- c()
 for (ind_number in 1:nrow(cluster_probs)){  
   for (cluster_number in 1:4){
@@ -99,6 +97,6 @@ coordinate_cluster_sf <- left_join(areas, areaID_cluster, by = "area_ID")
 
 
 ## save resulting sf
-st_write(coordinate_cluster_sf, "vi_distinct_genetic_diversity/3_R/structure_pie_charts.shp")
+st_write(coordinate_cluster_sf, "vi_distinct_genetic_diversity/4_R/structure_pie_charts.shp")
 
 

@@ -8,13 +8,13 @@ library(dplyr)
 # delete the first row
 # load genetic data
 # load genetic data
-genetic_info <- read.structure("vi_distinct_genetic_diversity/3_R/populations.stru") 
-366
-4988 
+genetic_info <- read.structure("vi_distinct_genetic_diversity/2_quality_control/dataset/populations_cleaned.stru") 
+364
+5414 
 1
 2
 
-1
+0
 n
 
 
@@ -86,5 +86,5 @@ sort(B1, decreasing = TRUE)
 # from IDs to areas: create sf
 # unnecessary because protects all, just copy from range & ESH
 
-# 7        6        2        1        3        4        5 
-# 14.46331 14.34920 14.34644 14.23557 14.21091 14.20368 14.19090 
+# 1        7        2        3        6        4        5 
+# 14.40561 14.40182 14.33553 14.29799 14.25729 14.16422 14.13754 
