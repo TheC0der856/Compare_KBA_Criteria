@@ -29,6 +29,7 @@ combine_criteria/KBA_March2025
 combine_criteria/KBA_June2024S
 # ignore test stack
 *.tif
+*.zip
 # ignore resulting plots
 *.pdf
 *.jpg
