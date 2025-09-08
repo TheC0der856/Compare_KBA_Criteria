@@ -25,6 +25,8 @@ iii_extend_of_suitable_habitat/Presence
 iii_extend_of_suitable_habitat/ensemble_model_results
 vi_distinct_genetic_diversity/plink_data
 vi_distinct_genetic_diversity/clumpak_data
+combine_criteria/KBA_March2025
+combine_criteria/KBA_June2024S
 # ignore test stack
 *.tif
 # ignore resulting plots
