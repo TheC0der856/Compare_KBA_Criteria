@@ -189,38 +189,20 @@ lagunetas1 <- lagunetas_split[2, ]
 lagunetas2 <- lagunetas_split[1, ]
 
 
-# calculate Icod: 
-# range west Tenerife, called "Teno"
+####### Teno
+# range called "Teno"
 range_westTenerife <- ranges %>%
   filter(id == "Teno") %>%
   mutate(name = "Teno") %>%
   select(name, geometry)
-# protected area west Tenerife, called "Teno" and "Chinyero"
-protected_area_teno_chinyero <- protected_areas %>%
-  filter(nombre %in% c("Teno", "Chinyero")) %>%
-  select(geometry)
-protected_area_westTenerife <- st_union(protected_area_teno_chinyero)
-# non-protected range west Tenerife by "Teno" and "Chinyero"
-range_rest_westTenerife <- st_difference(range_westTenerife, protected_area_westTenerife)
-# separate in single polygons
-ranges_rest_westTenerife <- st_cast(range_rest_westTenerife, "POLYGON")
-# keep largest polygon
-icod <- ranges_rest_westTenerife %>%
-  slice_max(as.numeric(st_area(geometry)), n = 1)
-
-# Chinyero (Aussprache: Chiñero)
-# extracted area from protected areas
-chinyero <- protected_areas %>%
-  filter(nombre == "Chinyero") %>%
-  mutate(name = "Chinyero") %>%
-  select(name, geometry)
-
-# Teno
-# extracted area from protected areas
-teno <- protected_areas %>%
+# protected area called "Teno" 
+protected_area_teno <- protected_areas %>%
   filter(nombre == "Teno") %>%
-  mutate(name = "Teno") %>%
-  select(name, geometry)
+  select(geometry)
+# devide in icod and teno
+icod <- st_difference(range_westTenerife, protected_area_teno )
+teno <- st_intersection(range_westTenerife, protected_area_teno)
+
 
 
 
@@ -290,7 +272,7 @@ frontera <- protected_areas %>%
   select(name, geometry)
 
 potential_KBAs <- rbind(potential_KBAs, 
-                        east_anaga, west_anaga1, west_anaga2, lagunetas1, lagunetas2, la_resbala, icod, chinyero, teno,
+                        east_anaga, west_anaga1, west_anaga2, lagunetas1, lagunetas2, la_resbala, icod, teno,
                         majona, garajonay, carreton, vallehermoso,
                         ventejis, frontera)
 
