@@ -1,6 +1,7 @@
 library(sf)
 library(dplyr)
 library(tmap)
+library(lwgeom) # für st_split
 
 #load range
 range <- st_read("C:/Users/Gronefeld/Desktop/Compare_KBA_criteria/iv_range/range.shp")
@@ -19,9 +20,9 @@ ranges <- ranges %>%
   mutate(area_km2 = as.numeric(st_area(geometry)) / 10^6)
 print(ranges %>% select(area_km2))
 # view areas
-tmap_mode("view")
-tm_shape(ranges) +
-  tm_polygons("area_km2", palette = "viridis", title = "Fläche (km²)")
+# tmap_mode("view")
+# tm_shape(ranges) +
+#   tm_polygons("area_km2", palette = "viridis", title = "Fläche (km²)")
 
 
 # load protected areas
@@ -32,9 +33,9 @@ protected_areas <- protected_areas %>%
   mutate(area_km2 = as.numeric(st_area(geometry)) / 10^6)
 print(protected_areas %>% select(area_km2))
 # view protected areas
-tmap_mode("view")
-tm_shape(protected_areas) +
-  tm_polygons("area_km2", palette = "viridis", title = "Fläche (km²)")
+# tmap_mode("view")
+# tm_shape(protected_areas) +
+#   tm_polygons("area_km2", palette = "viridis", title = "Fläche (km²)")
 
 # load KBAs
 KBA <- st_read("C:/Users/Gronefeld/Desktop/Compare_KBA_criteria/combine_criteria/KBA_March2025/KBAsGlobal_2025_March_01/KBAsGlobal_2025_March_01_POL.shp")
@@ -127,49 +128,66 @@ potential_KBAs <- st_sf(
 #################################################
 
 ################# Tenerife ######################
-# Anaga: extracted area from range
+####### Anaga
+# east Anaga: extracted area from range
 east_anaga <- ranges %>%
   filter(id == "eAnaga") %>%
   mutate(name = "eAnaga") %>%
   select(name, geometry)
-
+# west Anaga: extracted area from range
 west_anaga <- ranges %>%
   filter(id == "wAnaga") %>%
   mutate(name = "wAnaga") %>%
   select(name, geometry)
+# create two areas of the approx. same size
+west_anaga_split <- st_split(
+  west_anaga,
+  st_sfc(st_linestring(matrix(
+    c(mean(c(st_bbox(west_anaga)[c("xmin","xmax")])) - 100,
+      st_bbox(west_anaga)["ymin"],
+      mean(c(st_bbox(west_anaga)[c("xmin","xmax")])) - 100,
+      st_bbox(west_anaga)["ymax"]),
+    ncol = 2, byrow = TRUE
+  )), crs = st_crs(west_anaga))
+) %>%
+  st_collection_extract("POLYGON") %>%
+  st_sf() %>%
+  mutate(area = st_area(geometry)) %>%
+  arrange(area) %>%
+  summarise(geometry = c(st_union(geometry[1:2]), geometry[3]))
+# safe both areas under seperate ids
+west_anaga1 <- west_anaga_split[1, ]
+west_anaga2 <- west_anaga_split[2, ]
 
 
-# calculate Lagunetas2: 
-# range of area close to Las Lagunetas and La Laguna
+####### Lagunetas
+# range including las Lagunetas 
 range_lagunetas <- ranges %>%
   filter(id == "Lagunetas") %>%
   mutate(name = "Lagunetas") %>%
   select(name, geometry)
-# protected area in the range
-protected_areas_lagunetas <- protected_areas %>%
-  filter(nombre %in% c("Las Lagunetas", "La Resbala")) %>%
+# protected area "La Resbala" in the range
+protected_area_lagunetas <- protected_areas %>%
+  filter(nombre == "La Resbala") %>%
   select(geometry)
-protected_area_lagunetas <- st_union(protected_areas_lagunetas)
-# divide
-range_rest_lagunetas <- st_difference(range_lagunetas, protected_area_lagunetas)
-# separate in single polygons
-ranges_rest_lagunetas <- st_cast(range_rest_lagunetas, "POLYGON")
-# keep largest polygon
-lagunetas2 <- ranges_rest_lagunetas  %>%
-  slice_max(as.numeric(st_area(geometry)), n = 1)
+# isolate la Resbala and everything westwards of la Resbala
+inside <- st_intersection(range_lagunetas, protected_area_lagunetas)
+outside <- st_difference(range_lagunetas, protected_area_lagunetas)
+outside_smallest <- st_sf(geometry = st_cast(outside, "POLYGON")) %>% filter(st_area(geometry) == min(st_area(geometry)))
+la_resbala <- st_union(outside_smallest, inside)
+# devide the rest of the range in two:
+outside_biggest <- st_sf(geometry = st_cast(outside, "POLYGON")) %>% filter(st_area(geometry) == max(st_area(geometry)))
+bbox <- st_bbox(outside_biggest)
+lagunetas_split <- st_split(
+  outside_biggest,
+  st_sfc(st_linestring(matrix(c(
+    bbox["xmin"] - offset, bbox["ymax"] - 1000,
+    bbox["xmax"] - offset, bbox["ymin"] - 1000
+  ), ncol = 2, byrow = TRUE)), crs = st_crs(outside_biggest))
+) %>% st_collection_extract("POLYGON") %>% st_sf()
+lagunetas1 <- lagunetas_split[2, ]
+lagunetas2 <- lagunetas_split[1, ]
 
-# Las Lagunetas
-# extracted area from protected areas
-las_lagunetas <- protected_areas %>%
-  filter(nombre == "Las Lagunetas") %>%
-  mutate(name = "Las Lagunetas") %>%
-  select(name, geometry)
-
-# calculate Aguamansa
-aguamansa <- ranges_rest_lagunetas %>%
-  slice_max(as.numeric(st_area(geometry)), n = 2) %>%  # zwei größte Polygone auswählen
-  slice(2) %>%                                         # nur das zweitgrößte behalten
-  select(name, geometry)
 
 # calculate Icod: 
 # range west Tenerife, called "Teno"
@@ -272,7 +290,7 @@ frontera <- protected_areas %>%
   select(name, geometry)
 
 potential_KBAs <- rbind(potential_KBAs, 
-                        anaga, lagunetas2, las_lagunetas, aguamansa, icod, chinyero, teno,
+                        east_anaga, west_anaga1, west_anaga2, lagunetas1, lagunetas2, la_resbala, icod, chinyero, teno,
                         majona, garajonay, carreton, vallehermoso,
                         ventejis, frontera)
 
