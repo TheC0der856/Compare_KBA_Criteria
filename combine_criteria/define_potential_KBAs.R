@@ -155,9 +155,11 @@ west_anaga_split <- st_split(
   mutate(area = st_area(geometry)) %>%
   arrange(area) %>%
   summarise(geometry = c(st_union(geometry[1:2]), geometry[3]))
-# safe both areas under seperate ids
-west_anaga1 <- west_anaga_split[1, ]
-west_anaga2 <- west_anaga_split[2, ]
+# safe both areas under separate ids
+west_anaga1 <- west_anaga_split[1, ] %>%
+  mutate(name = "West Anaga 1")
+west_anaga2 <- west_anaga_split[2, ] %>%
+  mutate(name = "West Anaga 2")
 
 
 ####### Lagunetas
@@ -169,6 +171,7 @@ range_lagunetas <- ranges %>%
 # protected area "La Resbala" in the range
 protected_area_lagunetas <- protected_areas %>%
   filter(nombre == "La Resbala") %>%
+  mutate(name = "La Resbala") %>%
   select(geometry)
 # isolate la Resbala and everything westwards of la Resbala
 inside <- st_intersection(range_lagunetas, protected_area_lagunetas)
@@ -181,12 +184,14 @@ bbox <- st_bbox(outside_biggest)
 lagunetas_split <- st_split(
   outside_biggest,
   st_sfc(st_linestring(matrix(c(
-    bbox["xmin"] - offset, bbox["ymax"] - 1000,
-    bbox["xmax"] - offset, bbox["ymin"] - 1000
+    bbox["xmin"] , bbox["ymax"] - 1000,
+    bbox["xmax"] , bbox["ymin"] - 1000
   ), ncol = 2, byrow = TRUE)), crs = st_crs(outside_biggest))
 ) %>% st_collection_extract("POLYGON") %>% st_sf()
-lagunetas1 <- lagunetas_split[2, ]
-lagunetas2 <- lagunetas_split[1, ]
+lagunetas1 <- lagunetas_split[2, ] %>%
+  mutate(name = "Lagunetas 1")
+lagunetas2 <- lagunetas_split[1, ] %>%
+  mutate(name = "Lagunetas 2")
 
 
 ####### Teno
@@ -200,60 +205,110 @@ protected_area_teno <- protected_areas %>%
   filter(nombre == "Teno") %>%
   select(geometry)
 # devide in icod and teno
-icod <- st_difference(range_westTenerife, protected_area_teno )
-teno <- st_intersection(range_westTenerife, protected_area_teno)
+icod <- st_difference(range_westTenerife, protected_area_teno ) %>%
+  mutate(name = "Icod")
+teno <- st_intersection(range_westTenerife, protected_area_teno) %>%
+  mutate(name = "Teno")
 
 
 
 
 ################# La Gomera ######################
+# Garajonay, use the KBA already proposed
+garajonay <- KBAs_small %>%
+  filter(IntName == "Garajonay National Park") %>%
+  mutate(name = "Garajonay") %>%
+  select(name, geometry)
+
+# Carreton
+carreton <- protected_areas %>%
+  filter(nombre == "Lomo del Carretón") %>%
+  mutate(name = "Carreton") %>%
+  select(name, geometry)
+
+# Lomo del Balo
+range_gomera <- ranges %>%
+  filter(id == "Gomera") %>%
+  mutate(name = "Gomera") %>%
+  select(name, geometry)
+orone <- protected_areas %>%
+  filter(nombre == "Orone") %>%
+  mutate(name = "Orone") %>%
+  select(name, geometry)
+# range gomera minus garajonay, orone, carreton
+gomera_shortend <- range_gomera %>%
+  st_difference(
+    st_union(
+      bind_rows(garajonay, orone, carreton)
+    )
+  ) %>%
+  st_cast("POLYGON") %>%                 
+  mutate(name = "Gomera_minus_some_protected_areas")
+# the area between garajonay, orone and carreton is lomo_balo
+lomo_balo <- gomera_shortend[6, ] %>%
+  mutate(name = "Lomo Balo")
+
+
+# Tazo-Caserio de Cubaba, Arguamul
+cubaba <- gomera_shortend[2, ] %>%
+  mutate(name = "Cubaba")
+
+# Vallehermoso and more
+hermigua_y_agulo <- KBAs_small %>%
+  filter(IntName == "Step rocks of Hermigua and Agulo") %>%
+  mutate(name = "Hermigua_y_Agulo") %>%
+  select(name, geometry)
+gomera_shortend2 <- st_difference(gomera_shortend, hermigua_y_agulo) %>%
+  st_cast("POLYGON")
+vallehermoso <- gomera_shortend2[3, ] %>%
+  mutate(name = "Vallehermoso")
+
 # Majona
-# extracted area from protected areas
 majona <- protected_areas %>%
   filter(nombre == "Majona") %>%
   mutate(name = "Majona") %>%
   select(name, geometry)
 
-# instead of protected areas, use KBA, because it is more inclusive!
-# # Garajonay
-# # extracted area from protected areas
-# garajonay <- protected_areas %>%
-#   filter(nombre == "Garajonay") %>%
-#   mutate(name = "Garajonay") %>%
-#   select(name, geometry)
-# # Benchijigua
-# # extracted area from protected areas
-# benchijigua <- protected_areas %>%
-#   filter(nombre == "Benchijigua") %>%
-#   mutate(name = "Benchijigua") %>%
-#   select(name, geometry)
-garajonay <- KBAs %>%
-  filter(intname == "Garajonay National Park") %>%
-  mutate(name = "Garajonay") %>%
-  select(name, geometry)
+# range: Hermigua and Agulo
+# my name: El Cedro
+gomera_shortend3 <- gomera_shortend %>%
+  st_difference(
+    st_union(
+      bind_rows(majona, vallehermoso)
+    )
+  ) %>%
+  st_cast("POLYGON") %>% 
+  mutate(id = row_number())
+cedro <- gomera_shortend3[3, ] %>%
+  mutate(name = "Cedro")
 
-# Lomo del Carretón
-# extracted area from protected areas
-carreton <- protected_areas %>%
-  filter(nombre == "Lomo del Carretón") %>%
-  mutate(name = "Lomo del Carretón") %>%
+# Vegaipala
+benchijigua <- protected_areas %>%
+  filter(nombre == "Benchijigua") %>%
+  mutate(name = "Benchijigua") %>%
   select(name, geometry)
+gomera_shortend4 <- range_gomera %>%
+  st_difference(
+    st_union(
+      bind_rows(garajonay, majona, benchijigua)
+    )
+  ) %>%
+  st_cast("POLYGON") %>% 
+  mutate(id = row_number())
+vegaipala <- gomera_shortend4[6,] %>%
+  mutate(name = "vegaipala")
 
-# Northern Gomera (Vallehermoso?)
-# range Gomera
-range_Gomera <- ranges %>%
-  filter(id == "Gomera") %>%
-  mutate(name = "Gomera") %>%
-  select(name, geometry)
-barrier_Gomera <- st_union(carreton, garajonay)
-range_Gomera_minus_barrier <- st_difference(range_Gomera, barrier_Gomera)
-# separate in single polygons
-ranges_Gomera_minus_barrier <- st_cast(range_Gomera_minus_barrier, "POLYGON")
-# keep vallehermoso polygon
-vallehermoso <- ranges_Gomera_minus_barrier %>%
-  slice_max(as.numeric(st_area(geometry)), n = 2) %>%  # die zwei größten Polygone
-  slice(2) %>%                                         # nur das zweitgrößte auswählen
-  select(name, geometry)
+# Imada
+gomera_shortend5 <- range_gomera %>%
+  st_difference(
+    st_union(
+      bind_rows(garajonay, vegaipala, lomo_balo)
+    )
+  ) %>%
+  st_cast("POLYGON") %>% 
+  mutate(id = row_number())
+imada <- gomera_shortend5[3,] %>%
+  mutate(name = "imada") 
 
 ################# El Hierro ######################
 
@@ -265,16 +320,32 @@ ventejis <- ranges %>%
   select(name, geometry)
 
 # Frontera
-# extracted area from protected areas
-frontera <- protected_areas %>%
-  filter(nombre == "Frontera") %>%
+# range west Hierro
+frontera <- ranges %>%
+  filter(id == "wHierro") %>%
   mutate(name = "Frontera") %>%
   select(name, geometry)
 
-potential_KBAs <- rbind(potential_KBAs, 
-                        east_anaga, west_anaga1, west_anaga2, lagunetas1, lagunetas2, la_resbala, icod, teno,
-                        majona, garajonay, carreton, vallehermoso,
-                        ventejis, frontera)
+
+####################################################
+################# combine ##########################
+
+
+# sf to combine
+sf_list <- list(
+  east_anaga, west_anaga1, west_anaga2, lagunetas1, lagunetas2, la_resbala, icod, teno,
+  garajonay, lomo_balo, carreton, cubaba, vallehermoso, cedro, majona, vegaipala, imada,
+  ventejis, frontera
+)
+
+# only name and geometry
+sf_list_simple <- lapply(sf_list, function(x) {
+  x %>% select(name, geometry)
+})
+
+# combine
+potential_KBAs <- bind_rows(sf_list_simple)
+
 
 # view potential_KBAs
 tmap_mode("view")
@@ -290,6 +361,5 @@ tm_shape(occ_points) +
           col.legend = tm_legend(title = "Occurrence Points")) 
 
 
-# icod - Acantilados de La Culata & Interián?
-# Aguamansa was machen mit Corona Forestal?
-# Gomera??: überschneidung majona und garajonay
+##### save!!
+st_write(potential_KBAs, "combine_criteria/define_potential_KBAs/potential_KBAs.shp")
