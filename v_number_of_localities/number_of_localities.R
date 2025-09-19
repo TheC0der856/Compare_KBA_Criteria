@@ -5,7 +5,7 @@ library(dplyr)
 library(geosphere)
 library(igraph)
 
-occ_data <-  read.csv("C:/Users/Gronefeld/Desktop/Compare_species-based_criteria/Calculations/iii_extend_of_suitable_habitat/Habitatmodellierung/occurences/Ariagona_margaritae_Alles.csv", sep = ",")
+occ_data <-  read.csv("iii_extend_of_suitable_habitat/occurrences/Ariagona_margaritae_Alles.csv", sep = ",")
 # Extract and clean coordinates 
 # only for rows which are not potential collection points and have exact coordinates
 occ.std <- occ_data[!is.na(occ_data$Specimen_ID) & occ_data$Specimen_ID != "", c("WGS84_X", "WGS84_Y")]
@@ -124,52 +124,8 @@ occurrences_sf <- st_transform(occurrences_sf, crs = 32628)
 # 29 localities, 3 localities should be protected at least. Let's see how many localities would be protected by each area
 
 
-# locality boundaries defined by range
-# load range
-range <- st_read("C:/Users/Gronefeld/Desktop/Compare_species-based_criteria/Calculations/iv_range/range.shp")
 
-# seperate the multipolygon into single polygons
-range_areas <- st_cast(range, "POLYGON")
-# give the polygons different "names"
-range_areas$FID <- 1:nrow(range_areas)
-
-# Count how many occurrence points are within each polygon
-occurrences_within <- st_join(occurrences_sf, range_areas)
-#table(occurrences_within$FID)
-# 1, 3, 4, 5, 6 are the areas that would protecting more than 10%
-#plot(range_areas)
-
-#find the polygon with the most points
-count_points_per_polygon <- occurrences_within %>%
-  group_by(FID) %>%
-  summarise(count = n())
-polygon_with_most_points_id <- count_points_per_polygon %>%
-  arrange(desc(count)) %>%
-  slice(1) %>%
-  pull(FID)
-#polygon_with_most_points_id
-
-# Extract the sf object of the polygon with the most points
-polygon_with_most_points <- range_areas[range_areas$FID == polygon_with_most_points_id, ]
-# plot(st_geometry(polygon_with_most_points), col = "red", main = "Polygon with the Most Occurrence Points")
-# plot(st_geometry(occurrences_sf), col = "blue", pch = 20, add = TRUE)
-
-# 
-# # calculate not only the area that has the most points but also the area with the highest density of points
-# range_areas$Area_m2 <- st_area(range_areas)
-# range_areas$Area_km2 <- range_areas$Area_m2 / 1e6  
-# range_areas$Area_km2_div_by_localities <- range_areas$Area_km2 / as.numeric(table(occurrences_within$FID))
-# # smallest area has the highest density of points!
-# # now the selected area would be different
-# # west-central-Hierro is most efficient, less area for more points, but non the less protects more than 10% of its localities
-# # Sort the sf object by area in ascending order
-# range_areas_sorted_for_Area_km2_div_by_localities <- range_areas[order(range_areas$Area_km2_div_by_localities), ]
-# range_areas_sorted_for_Area_km2_div_by_localities <- range_areas_sorted_for_Area_km2_div_by_localities[-(1:6), ]
-# #plot(st_geometry(area_highest_density_of_localities), col = "red", main = "Area with Highest Density of Localities")
-# range_areas_sorted_for_Area_km2_div_by_localities <- range_areas_sorted_for_Area_km2_div_by_localities[, c("geometry")]
-
-
-st_write(polygon_with_most_points, "C:/Users/Gronefeld/Desktop/Compare_species-based_criteria/Calculations/v_number_of_localities/area_with_most_localities.shp", append = FALSE)
+st_write(occurrences_sf, "C:/Users/Gronefeld/Desktop/Compare_KBA_Criteria/v_number_of_localities/localities.shp", append = FALSE)
 # st_write(range_areas_sorted_for_Area_km2_div_by_localities, "C:/Users/Gronefeld/Desktop/Compare_species-based_criteria/Calculations/v_number_of_localities/area_highest_density_of_localities.shp", append = FALSE)
 
 
