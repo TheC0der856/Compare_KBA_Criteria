@@ -19,8 +19,8 @@ ind_ids <- stru[,1]
 specimenID <- unique(ind_ids)
 # coordinates
 coordinates <- read.csv("iii_extend_of_suitable_habitat/occurrences/Ariagona_margaritae_Alles.csv")
-area <- st_read("iv_range/range.shp")
-areas <- st_cast(area, "POLYGON")
+areas <- st_read("combine_criteria/define_potential_KBAs/potential_KBAs.shp")
+
 
 
 
