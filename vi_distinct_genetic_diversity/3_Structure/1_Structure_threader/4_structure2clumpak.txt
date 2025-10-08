@@ -16,6 +16,3 @@ zip -r structure2clumpak.zip structure2clumpak
 ### download to local computer:
 scp -r utr_gronefeld@elwe1.rarp-kl.de:/scratch/utr_gronefeld/Structure_threader/testresults/structure2clumpak.zip C:\Users\Gronefeld\Desktop\structure2clumpak.zip
 # use clumpak
-
-### download structure file for R
-#scp utr_gronefeld@elwe1.rarp-kl.de:/scratch/utr_gronefeld/Structure_threader/populations.structure C:\Users\Gronefeld\Desktop\Compare_KBA_Criteria\vi_distinct_genetic_diversity\3_R\populations.structure
