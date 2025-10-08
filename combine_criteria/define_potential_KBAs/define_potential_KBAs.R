@@ -26,7 +26,7 @@ print(ranges %>% select(area_km2))
 
 
 # load protected areas
-protected_area <- st_read("C:/Users/Gronefeld/Desktop/Compare_KBA_Criteria/combine_criteria/protected_areas/eennpp/eennpp.shp")
+protected_area <- st_read("C:/Users/Gronefeld/Desktop/Compare_KBA_Criteria/combine_criteria/define_potential_KBAs/protected_areas/eennpp/eennpp.shp")
 protected_areas <- st_cast(protected_area, "POLYGON")
 # calculate area size 
 protected_areas <- protected_areas %>%
@@ -38,7 +38,7 @@ print(protected_areas %>% select(area_km2))
 #   tm_polygons("area_km2", palette = "viridis", title = "Fläche (km²)")
 
 # load KBAs
-KBA <- st_read("C:/Users/Gronefeld/Desktop/Compare_KBA_criteria/combine_criteria/KBA_March2025/KBAsGlobal_2025_March_01/KBAsGlobal_2025_March_01_POL.shp")
+KBA <- st_read("C:/Users/Gronefeld/Desktop/Compare_KBA_criteria/combine_criteria/define_potential_KBAs/KBA_March2025/KBAsGlobal_2025_March_01/KBAsGlobal_2025_March_01_POL.shp")
 KBAs <- st_cast(KBA, "POLYGON")
 # equal CRS/ projection
 KBAs <- st_transform(KBAs, st_crs(protected_areas))
@@ -142,8 +142,8 @@ west_anaga <- ranges %>%
 # create two areas of the approx. same size
 west_anaga_split <- st_split(
   west_anaga,
-  st_sfc(st_linestring(matrix(
-    c(mean(c(st_bbox(west_anaga)[c("xmin","xmax")])) - 100,
+ st_sfc(st_linestring(matrix(
+   c(mean(c(st_bbox(west_anaga)[c("xmin","xmax")])) - 100,
       st_bbox(west_anaga)["ymin"],
       mean(c(st_bbox(west_anaga)[c("xmin","xmax")])) - 100,
       st_bbox(west_anaga)["ymax"]),
@@ -153,7 +153,7 @@ west_anaga_split <- st_split(
   st_collection_extract("POLYGON") %>%
   st_sf() %>%
   mutate(area = st_area(geometry)) %>%
-  arrange(area) %>%
+ arrange(area) %>%
   summarise(geometry = c(st_union(geometry[1:2]), geometry[3]))
 # safe both areas under separate ids
 west_anaga1 <- west_anaga_split[1, ] %>%
@@ -177,9 +177,11 @@ protected_area_lagunetas <- protected_areas %>%
 inside <- st_intersection(range_lagunetas, protected_area_lagunetas)
 outside <- st_difference(range_lagunetas, protected_area_lagunetas)
 outside_smallest <- st_sf(geometry = st_cast(outside, "POLYGON")) %>% filter(st_area(geometry) == min(st_area(geometry)))
-la_resbala <- st_union(outside_smallest, inside)
+aguamansa <- st_union(outside_smallest, inside) %>%
+  mutate(name = "Aguamansa") 
 # devide the rest of the range in two:
 outside_biggest <- st_sf(geometry = st_cast(outside, "POLYGON")) %>% filter(st_area(geometry) == max(st_area(geometry)))
+
 bbox <- st_bbox(outside_biggest)
 lagunetas_split <- st_split(
   outside_biggest,
@@ -187,7 +189,7 @@ lagunetas_split <- st_split(
     bbox["xmin"] , bbox["ymax"] - 1000,
     bbox["xmax"] , bbox["ymin"] - 1000
   ), ncol = 2, byrow = TRUE)), crs = st_crs(outside_biggest))
-) %>% st_collection_extract("POLYGON") %>% st_sf()
+  ) %>% st_collection_extract("POLYGON") %>% st_sf()
 lagunetas1 <- lagunetas_split[2, ] %>%
   mutate(name = "Lagunetas 1")
 lagunetas2 <- lagunetas_split[1, ] %>%
@@ -220,11 +222,6 @@ garajonay <- KBAs_small %>%
   mutate(name = "Garajonay") %>%
   select(name, geometry)
 
-# Carreton
-carreton <- protected_areas %>%
-  filter(nombre == "Lomo del Carretón") %>%
-  mutate(name = "Carreton") %>%
-  select(name, geometry)
 
 # Lomo del Balo
 range_gomera <- ranges %>%
@@ -234,6 +231,10 @@ range_gomera <- ranges %>%
 orone <- protected_areas %>%
   filter(nombre == "Orone") %>%
   mutate(name = "Orone") %>%
+  select(name, geometry)
+carreton <- protected_areas %>%
+  filter(nombre == "Lomo del Carretón") %>%
+  mutate(name = "Carreton") %>%
   select(name, geometry)
 # range gomera minus garajonay, orone, carreton
 gomera_shortend <- range_gomera %>%
@@ -252,6 +253,15 @@ lomo_balo <- gomera_shortend[6, ] %>%
 # Tazo-Caserio de Cubaba, Arguamul
 cubaba <- gomera_shortend[2, ] %>%
   mutate(name = "Cubaba")
+# carreton_in_range <- st_intersection(carreton, range_gomera)
+# cubaba_carreton_geom <- st_union(
+#   cubaba$geometry,
+#   carreton_in_range$geometry
+# )
+# cubaba_carreton <- st_sf(
+#   name = "Cubaba_Carreton",
+#   geometry = cubaba_carreton_geom
+# )
 
 # Vallehermoso and more
 hermigua_y_agulo <- KBAs_small %>%
@@ -316,7 +326,7 @@ imada <- gomera_shortend5[3,] %>%
 # extracted area from ranges
 ventejis <- ranges %>%
   filter(id == "eHierro") %>%
-  mutate(name = "modified_Ventejís") %>%
+  mutate(name = "Ventejís") %>%
   select(name, geometry)
 
 # Frontera
@@ -333,8 +343,8 @@ frontera <- ranges %>%
 
 # sf to combine
 sf_list <- list(
-  east_anaga, west_anaga1, west_anaga2, lagunetas1, lagunetas2, la_resbala, icod, teno,
-  garajonay, lomo_balo, carreton, cubaba, vallehermoso, cedro, majona, vegaipala, imada,
+  east_anaga, west_anaga1, west_anaga2, lagunetas1, lagunetas2, aguamansa, icod, teno,
+  garajonay, lomo_balo, cubaba, carreton, vallehermoso, cedro, majona, vegaipala, imada,
   ventejis, frontera
 )
 
@@ -362,4 +372,4 @@ tm_shape(occ_points) +
 
 
 ##### save!!
-st_write(potential_KBAs, "potential_KBAs.shp")
+st_write(potential_KBAs, "combine_criteria/define_potential_KBAs/potential_KBAs.shp", append = FALSE)

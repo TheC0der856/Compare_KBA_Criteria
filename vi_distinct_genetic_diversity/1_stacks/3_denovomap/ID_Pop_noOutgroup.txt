@@ -56,7 +56,6 @@ SG019	agua
 SG020	agua
 SG021	agua
 SG022	agua
-SG023	agua
 SG024	agua
 SG025	agua
 SG089	agua
@@ -226,7 +225,6 @@ SG042	teno
 SG043	teno
 SG123	teno
 SG124	teno
-SG125	teno
 SG126	teno
 SG127	teno
 SG128	teno
@@ -394,5 +392,3 @@ T167	derrabado
 T168	derrabado
 T169	derrabado
 T170	derrabado
-SG215	out1
-SG217	out2

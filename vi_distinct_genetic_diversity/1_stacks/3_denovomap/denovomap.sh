@@ -1,6 +1,7 @@
 #!/bin/bash
 #SBATCH -t 140:00:00              # time limit
-#SBATCH --mem=100000
+#SBATCH --mem=64G
+#SBATCH --partition=skylake-96
 #SBATCH -J denovo
 #SBATCH --mail-type=END
 #SBATCH --ntasks=1
@@ -16,8 +17,9 @@ source ~/.bashrc
 mamba activate Stacks
 
 # calculation
-denovo_map.pl --popmap popmaps/ID_Pop1.txt --samples demultiplexed/ --threads 24 -o denovomap/calculated_files2 -M 3 -n 4
+denovo_map.pl --popmap popmaps/ID_Pop_noOutgroup.txt --samples demultiplexed/ --threads 24 -o denovomap/catalog_noOutgroup -M 3 -n 4
 
 # deactivate environment
 mamba deactivate
+
 

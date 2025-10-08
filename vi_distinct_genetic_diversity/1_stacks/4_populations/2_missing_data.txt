@@ -26,13 +26,13 @@ END {
 ##################### save only IDs in the file IDs_2remove.txt
 # than: 
 
-awk 'NR==FNR{a[$1]; next} !($1 in a)' IDs_2remove.txt ID_Pop1.txt > ID_Pop2.txt
+awk 'NR==FNR{a[$1]; next} !($1 in a)' IDs_2remove.txt ID_Pop_noOutgroup.txt > ID_Pop_noOutgroup_lessIDs.txt
 
 
 # testing if ID_Pop2.txt contains the correct rows: 
 head ID_Pop2.txt
 
-wc -l ID_Pop2.txt
-wc -l ID_Pop1.txt
+wc -l ID_Pop_noOutgroup.txt
+wc -l ID_Pop_noOutgroup_lessIDs.txt
 wc -l IDs_2remove.txt
 
