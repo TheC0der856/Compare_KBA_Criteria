@@ -8,7 +8,7 @@ library("sf")
 
 ############################## import data ####################################################
 # population structure
-q_matrix <- read.csv("vi_distinct_genetic_diversity/clumpak_data/K=4/MinorCluster1/CLUMPP.files/ClumppIndFile.output", 
+q_matrix <- read.csv("vi_distinct_genetic_diversity/3_Structure/clumpak_data/K=4/MinorCluster1/CLUMPP.files/ClumppIndFile.output", 
                      header = FALSE, 
                      sep = "", 
                      fill = TRUE)
@@ -97,6 +97,6 @@ coordinate_cluster_sf <- left_join(areas, areaID_cluster, by = "area_ID")
 
 
 ## save resulting sf
-st_write(coordinate_cluster_sf, "vi_distinct_genetic_diversity/4_R/structure_pie_charts.shp")
+st_write(coordinate_cluster_sf, "vi_distinct_genetic_diversity/3_Structure/structure_pie_charts.shp")
 
 
