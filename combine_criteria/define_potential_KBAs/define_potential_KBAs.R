@@ -4,7 +4,7 @@ library(tmap)
 library(lwgeom) # für st_split
 
 #load range
-range <- st_read("C:/Users/Gronefeld/Desktop/Compare_KBA_criteria/iv_range/range.shp")
+range <- st_read("iv_range/range.shp")
 ranges <- st_cast(range, "POLYGON")
 # add ids
 ranges <- ranges %>%
@@ -26,7 +26,7 @@ print(ranges %>% select(area_km2))
 
 
 # load protected areas
-protected_area <- st_read("C:/Users/Gronefeld/Desktop/Compare_KBA_Criteria/combine_criteria/define_potential_KBAs/protected_areas/eennpp/eennpp.shp")
+protected_area <- st_read("combine_criteria/define_potential_KBAs/protected_areas/eennpp/eennpp.shp")
 protected_areas <- st_cast(protected_area, "POLYGON")
 # calculate area size 
 protected_areas <- protected_areas %>%
@@ -38,7 +38,7 @@ print(protected_areas %>% select(area_km2))
 #   tm_polygons("area_km2", palette = "viridis", title = "Fläche (km²)")
 
 # load KBAs
-KBA <- st_read("C:/Users/Gronefeld/Desktop/Compare_KBA_criteria/combine_criteria/define_potential_KBAs/KBA_March2025/KBAsGlobal_2025_March_01/KBAsGlobal_2025_March_01_POL.shp")
+KBA <- st_read("combine_criteria/define_potential_KBAs/KBA_March2025/KBAsGlobal_2025_March_01/KBAsGlobal_2025_March_01_POL.shp")
 KBAs <- st_cast(KBA, "POLYGON")
 # equal CRS/ projection
 KBAs <- st_transform(KBAs, st_crs(protected_areas))
