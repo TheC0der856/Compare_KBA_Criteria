@@ -43,7 +43,8 @@ combine_criteria/define_potential_KBAs/KBA_June2024
 vi_distinct_genetic_diversity/4_distinct_genetic_diversity/*.gitignore
 vi_distinct_genetic_diversity/4_distinct_genetic_diversity/LICENSE
 vi_distinct_genetic_diversity/4_distinct_genetic_diversity/*.md
-
+vi_distinct_genetic_diversity/4_distinct_genetic_diversity/code/libraries.txt
+vi_distinct_genetic_diversity/4_distinct_genetic_diversity/code/minimizing_problem.R
 
 
 #git rm -rf --cached .
