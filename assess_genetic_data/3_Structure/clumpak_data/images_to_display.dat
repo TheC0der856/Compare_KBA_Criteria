@@ -1,6 +1,0 @@
-K=2	20/20, Mean(LnProb) = -780270.555, Mean(similarity score) = 1.000	K=2.MajorCluster.png
-K=3	20/20, Mean(LnProb) = -601590.280, Mean(similarity score) = 0.820	K=3.MajorCluster.png
-K=4	12/20, Mean(LnProb) = -576740.242, Mean(similarity score) = 0.850	K=4.MajorCluster.png
-K=5	12/20, Mean(LnProb) = -576301.308, Mean(similarity score) = 0.814	K=5.MajorCluster.png
-K=4	8/20, Mean(LnProb) = -476964.388, Mean(similarity score) = 1.000	K=4.MinorCluster1.png
-K=5	8/20, Mean(LnProb) = -464942.600, Mean(similarity score) = 0.817	K=5.MinorCluster1.png
