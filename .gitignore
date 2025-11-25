@@ -40,11 +40,11 @@ combine_criteria/define_potential_KBAs/KBA_June2024
 # ignore created results
 *.csv
 # ignore stuff in Optimization project
-vi_distinct_genetic_diversity/4_distinct_genetic_diversity/*.gitignore
-vi_distinct_genetic_diversity/4_distinct_genetic_diversity/LICENSE
-vi_distinct_genetic_diversity/4_distinct_genetic_diversity/*.md
-vi_distinct_genetic_diversity/4_distinct_genetic_diversity/code/libraries.txt
-vi_distinct_genetic_diversity/4_distinct_genetic_diversity/code/minimizing_problem.R
+vi_distinct_genetic_diversity/optimization/*.gitignore
+vi_distinct_genetic_diversity/optimization/LICENSE
+vi_distinct_genetic_diversity/optimization/*.md
+vi_distinct_genetic_diversity/optimization/code/libraries.txt
+vi_distinct_genetic_diversity/optimization/code/minimizing_problem.R
 
 
 #git rm -rf --cached .
