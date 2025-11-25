@@ -1,0 +1,38 @@
+
+grep -v '^##' populations.snps.vcf | \
+awk '
+BEGIN {OFS="\t"}
+NR==1 {
+  for (i=10; i<=NF; i++) ind[i]=$i
+  next
+}
+{
+  for (i=10; i<=NF; i++) {
+    total[i]++
+    if ($i ~ /^\.\//) missing[i]++
+  }
+}
+END {
+  print "Individual", "Missing", "Total", "MissingRate"
+  for (i in ind) {
+    rate = missing[i]/total[i]
+    if (rate > 0.4)
+      print ind[i], missing[i], total[i], rate
+  }
+}'
+
+# I had to choose a missing rate of 0.4 not to loose cementerio.
+
+##################### save only IDs in the file IDs_2remove.txt
+# than: 
+
+awk 'NR==FNR{a[$1]; next} !($1 in a)' IDs_2remove.txt ID_Pop_noOutgroup.txt > ID_Pop_noOutgroup_lessIDs.txt
+
+
+# testing if ID_Pop2.txt contains the correct rows: 
+head ID_Pop2.txt
+
+wc -l ID_Pop_noOutgroup.txt
+wc -l ID_Pop_noOutgroup_lessIDs.txt
+wc -l IDs_2remove.txt
+

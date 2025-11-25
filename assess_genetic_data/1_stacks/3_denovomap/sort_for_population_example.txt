@@ -1,0 +1,17 @@
+awk '$2=="cementerio"' ID_Pop1.txt > ID_Pop1_sorted.txt
+awk '$2=="fronton"' ID_Pop1.txt >> ID_Pop1_sorted.txt
+awk '$2=="wAnaga"' ID_Pop1.txt >> ID_Pop1_sorted.txt
+awk '$2=="rio"' ID_Pop1.txt >> ID_Pop1_sorted.txt
+awk '$2=="agua"' ID_Pop1.txt >> ID_Pop1_sorted.txt
+awk '$2=="lagunetas"' ID_Pop1.txt >> ID_Pop1_sorted.txt
+awk '$2=="huerta"' ID_Pop1.txt >> ID_Pop1_sorted.txt
+awk '$2=="guillen"' ID_Pop1.txt >> ID_Pop1_sorted.txt
+awk '$2=="charcos"' ID_Pop1.txt >> ID_Pop1_sorted.txt
+awk '$2=="icod"' ID_Pop1.txt >> ID_Pop1_sorted.txt
+awk '$2=="llanos"' ID_Pop1.txt >> ID_Pop1_sorted.txt
+awk '$2=="teno"' ID_Pop1.txt >> ID_Pop1_sorted.txt
+awk '$2=="palmarteno"' ID_Pop1.txt >> ID_Pop1_sorted.txt
+awk '$2==2' ID_Pop1.txt >> ID_Pop1_sorted.txt
+awk '$2==3' ID_Pop1.txt >> ID_Pop1_sorted.txt
+awk '$2=="out1"' ID_Pop1.txt >> ID_Pop1_sorted.txt
+awk '$2=="out2"' ID_Pop1.txt >> ID_Pop1_sorted.txt

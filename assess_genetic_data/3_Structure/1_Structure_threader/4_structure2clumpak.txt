@@ -1,0 +1,18 @@
+cd testresults
+
+mkdir -p structure2clumpak/K2 structure2clumpak/K3 structure2clumpak/K4 structure2clumpak/K5
+
+cp *K2* structure2clumpak/K2/
+cp *K3* structure2clumpak/K3/
+cp *K4* structure2clumpak/K4/
+cp *K5* structure2clumpak/K5/
+
+
+ 
+
+zip -r structure2clumpak.zip structure2clumpak
+
+
+### download to local computer:
+scp -r utr_gronefeld@elwe1.rarp-kl.de:/scratch/utr_gronefeld/Structure_threader/testresults/structure2clumpak.zip C:\Users\Gronefeld\Desktop\structure2clumpak.zip
+# use clumpak

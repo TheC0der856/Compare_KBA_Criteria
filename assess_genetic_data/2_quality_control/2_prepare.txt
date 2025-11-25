@@ -1,0 +1,17 @@
+############################ remove headers ############################
+# remove first 2 rows
+sed '1,2d' populations.structure > populations_cleaned.structure
+
+
+############################ find mainparams ###########################
+
+# find NUMINDS:
+wc -l populations_cleaned.structure
+# result : 2 = NUMINDS
+
+# open populations.log  to find NUMLOCI = variant sites remained
+
+############################ download ###################################
+
+scp utr_gronefeld@elwe1.rarp-kl.de:/scratch/utr_gronefeld/combined_analyses/populations/populations_cleaned.structure C:\Users\Gronefeld\Desktop\Compare_KBA_Criteria\vi_distinct_genetic_diversity\2_quality_control\dataset\populations_cleaned.structure
+scp utr_gronefeld@elwe1.rarp-kl.de:/scratch/utr_gronefeld/combined_analyses/populations/populations.snps.min4.phy C:\Users\Gronefeld\Desktop\Compare_KBA_Criteria\vi_distinct_genetic_diversity\2_quality_control\dataset\populations.snps.min4.phy

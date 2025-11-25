@@ -1,0 +1,4 @@
+# create barcode
+touch barcodes3_1.txt
+# edit and view barcode
+nano barcodes3_1.txt

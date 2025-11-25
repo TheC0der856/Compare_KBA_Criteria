@@ -1,0 +1,65 @@
+cd /scratch/utr_gronefeld/combined_analyses/nM_test
+wd=$(pwd)
+n_opti=$(seq 1 6)
+
+echo $n_opti
+
+# initialize temp files
+> temp_total_loci_SNPs
+> temp_M
+> temp_total_pol_loci
+
+for M in $n_opti
+do
+    total_kept_loci=0
+    total_variant_sites=0
+    found_log=0
+
+    for dir in $wd/test_M${M}_n*/; do
+        if [[ -f "${dir}/populations.log" ]]; then
+            kept_line=$(grep "Kept" "${dir}/populations.log")
+            if [[ ! -z "$kept_line" ]]; then
+                loci=$(echo $kept_line | cut -f 2 -d " ")
+                snps=$(echo $kept_line | cut -f 14 -d " ")
+                total_kept_loci=$((total_kept_loci + loci))
+                total_variant_sites=$((total_variant_sites + snps))
+                found_log=1
+            fi
+        fi
+    done
+
+    if [[ $found_log -eq 1 ]]; then
+        echo -e "${total_kept_loci}\t${total_variant_sites}" >> temp_total_loci_SNPs
+        echo $M >> temp_M
+    fi
+done
+
+# obtain n. polymorphic loci
+for M in $n_opti
+do
+    total_loci_M=0
+    found_sumstats=0
+
+    for dir in $wd/test_M${M}_n*/; do
+        if [[ -f "${dir}/populations.sumstats.tsv" ]]; then
+            awk '{print $1}' "${dir}/populations.sumstats.tsv" | sort | uniq | sed '1d' > temp_pol_loci1
+            COUNT=$(wc -l < temp_pol_loci1)
+            total_loci_M=$((total_loci_M + COUNT))
+            found_sumstats=1
+        fi
+    done
+
+    if [[ $found_sumstats -eq 1 ]]; then
+        echo $total_loci_M >> temp_total_pol_loci
+    fi
+done
+
+# create results table
+echo -e "M\tn_RAD_loci\tn_variant_sites\tn_polymorphic_RAD_loc" > temp_head.txt
+paste temp_M temp_total_loci_SNPs temp_total_pol_loci > temp_table.txt
+
+cat temp_head.txt temp_table.txt > Results_opti.txt
+sed -i 's|\s|\t|g' Results_opti.txt
+
+rm temp*
+cat Results_opti.txt

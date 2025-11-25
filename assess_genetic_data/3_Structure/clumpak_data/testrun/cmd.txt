@@ -1,0 +1,3 @@
+/lsweb/josef_sites/clumpak/
+perl /lsweb/josef_sites/clumpak/sendFirstEmailNew.pl gronefeld@uni-trier.de 1759309743;perl CLUMPAK.pl --id 1759309743 --dir /lsweb/josef_results/clumpak/1759309743 --file /lsweb/josef_results/clumpak/1759309743/structure2clumpak.zip  --inputtype structure;perl sendLastEmail.pl --toEmail gronefeld@uni-trier.de --id 1759309743;
+/lsweb/josef_results/clumpak/1759309743/

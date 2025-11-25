@@ -1,0 +1,70 @@
+
+Using the parameter settings in the file: 
+''/lsweb/josef_results/clumpak/1759309743/tmp/clumpp.paramfile''
+
+Parameter settings
+----------------------- Main parameters -------------------------
+DATATYPE = 0
+INDFILE = /lsweb/josef_results/clumpak/1759309743/tmp/ClumppIndFile
+POPFILE = 
+OUTFILE = /lsweb/josef_results/clumpak/1759309743/tmp/ClumppIndFile.output
+MISCFILE = /lsweb/josef_results/clumpak/1759309743/tmp/ClumppIndFile.misc
+K = 5
+C = 345
+R = 12
+M = 3
+W = 0
+S = 2
+- Additional options for the Greedy and LargeKGreedy algorithms -
+GREEDY_OPTION = 2
+REPEATS = 2000
+PERMUTATIONFILE = 
+----------------------- Optional outputs ------------------------
+PRINT_PERMUTED_DATA = 1
+PERMUTED_DATAFILE = arabid.perm_datafile
+PRINT_EVERY_PERM = 0
+EVERY_PERMFILE = 
+PRINT_RANDOM_INPUTORDER = 0
+RANDOM_INPUTORDERFILE = 
+----------------------- Advanced options ------------------------
+OVERRIDE_WARNINGS = 0
+ORDER_BY_RUN = 1
+
+
+In total, 2000 configurations of runs and clusters will be tested.
+
+Results
+------------------------------
+The highest value of H' is: 0.81383969171755
+
+The list of permutations of the clusters that produces that
+H' value is (runs are listed sequentially on separate rows)
+
+1 2 3 4 5 
+3 2 5 1 4 
+2 3 5 1 4 
+2 5 4 3 1 
+1 3 5 4 2 
+2 5 3 1 4 
+2 5 4 3 1 
+5 1 2 4 3 
+4 5 1 2 3 
+1 2 5 4 3 
+5 3 1 4 2 
+5 2 3 4 1 
+
+The pairwise G' values for each pair of runs where the clusters
+of each run are permuted according to the list of permutations above
+
+1.0000 0.9991 0.7477 0.8219 0.7796 0.7805 0.7475 0.7786 0.9991 0.7787 0.9990 0.9991 
+0.9991 1.0000 0.7477 0.8219 0.7796 0.7805 0.7475 0.7786 0.9993 0.7787 0.9992 0.9992 
+0.7477 0.7477 1.0000 0.6902 0.6649 0.6656 0.9987 0.6643 0.7477 0.6644 0.7477 0.7477 
+0.8219 0.8219 0.6902 1.0000 0.7162 0.7169 0.6902 0.7154 0.8218 0.7156 0.8217 0.8217 
+0.7796 0.7796 0.6649 0.7162 1.0000 0.9985 0.6648 0.9983 0.7795 0.9985 0.7796 0.7795 
+0.7805 0.7805 0.6656 0.7169 0.9985 1.0000 0.6654 0.9975 0.7805 0.9978 0.7805 0.7805 
+0.7475 0.7475 0.9987 0.6902 0.6648 0.6654 1.0000 0.6641 0.7475 0.6642 0.7475 0.7475 
+0.7786 0.7786 0.6643 0.7154 0.9983 0.9975 0.6641 1.0000 0.7785 0.9986 0.7786 0.7786 
+0.9991 0.9993 0.7477 0.8218 0.7795 0.7805 0.7475 0.7785 1.0000 0.7787 0.9992 0.9992 
+0.7787 0.7787 0.6644 0.7156 0.9985 0.9978 0.6642 0.9986 0.7787 1.0000 0.7787 0.7787 
+0.9990 0.9992 0.7477 0.8217 0.7796 0.7805 0.7475 0.7786 0.9992 0.7787 1.0000 0.9992 
+0.9991 0.9992 0.7477 0.8217 0.7795 0.7805 0.7475 0.7786 0.9992 0.7787 0.9992 1.0000 
