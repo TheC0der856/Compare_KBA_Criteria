@@ -45,6 +45,7 @@ vi_distinct_genetic_diversity/optimization/LICENSE
 vi_distinct_genetic_diversity/optimization/*.md
 vi_distinct_genetic_diversity/optimization/code/libraries.txt
 vi_distinct_genetic_diversity/optimization/code/minimizing_problem.R
-
+vi_distinct_genetic_diversity/optimization/data/
+vi_distinct_genetic_diversity/optimization/results/
 
 #git rm -rf --cached .
