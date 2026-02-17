@@ -6,16 +6,19 @@ library(sf)
 potential_KBAs <- st_read("combine_criteria/define_potential_KBAs/potential_KBAs.shp")
 # suitable habitat:
 suitable_habitat <- st_read("iii_extend_of_suitable_habitat/suitable_habitat.shp")
+range <- st_read("iv_range/range.shp")
 
+# suitable habitat in range
+suitable_habitat_in_range <- st_intersection(suitable_habitat, range)
 
-total_suitable_area <- sum(st_area(suitable_habitat))
+total_suitable_area <- sum(st_area(suitable_habitat_in_range))
 
 # % of suitable habitat of each potential KBA
 kba_coverage <- potential_KBAs %>%
   rowwise() %>%  # wichtig, um Zeile für Zeile zu rechnen
   mutate(
     total_area = st_area(geometry),
-    habitat_area = sum(st_area(st_intersection(geometry, suitable_habitat))),
+    habitat_area = sum(st_area(st_intersection(geometry, suitable_habitat_in_range))),
     percent_covered = as.numeric(habitat_area / total_suitable_area  * 100)
   ) %>%
   ungroup() %>%
