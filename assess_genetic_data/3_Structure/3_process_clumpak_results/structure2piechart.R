@@ -8,12 +8,12 @@ library("sf")
 
 ############################## import data ####################################################
 # population structure
-q_matrix <- read.csv("vi_distinct_genetic_diversity/3_Structure/clumpak_data/K=4/MinorCluster1/CLUMPP.files/ClumppIndFile.output", 
+q_matrix <- read.csv("assess_genetic_data//3_Structure/clumpak_data/K=4/MinorCluster1/CLUMPP.files/ClumppIndFile.output", 
                      header = FALSE, 
                      sep = "", 
                      fill = TRUE)
 # IDs of individuals
-stru <- read.table("vi_distinct_genetic_diversity/2_quality_control/dataset/populations_cleaned.stru",
+stru <- read.table("assess_genetic_data//2_quality_control/dataset/populations_cleaned.stru",
                    header = FALSE, stringsAsFactors = FALSE)
 ind_ids <- stru[,1]
 specimenID <- unique(ind_ids)
@@ -49,7 +49,17 @@ organised_cluster_probs <- data.frame(specimen_id = ind_col,
                                       prob = prob_col, 
                                       cluster = cluster_col)
 
+cluster_wide <- organised_cluster_probs %>%
+  pivot_wider(
+    names_from = cluster,
+    values_from = prob,
+    names_prefix = "Cluster"
+  ) %>%
+  arrange(specimen_id)
 
+write.csv(cluster_wide,
+          file = "assess_genetic_data/3_Structure/clusterprop_ids.csv",
+          row.names = FALSE)
 
 ########################### organize area coordinates ################################################
 coordinates$WGS84_X <- as.numeric(gsub(",", ".", coordinates$WGS84_X))
