@@ -48,7 +48,7 @@ for(ind_number in 1:nrow(cluster_probs)) {
 organised_cluster_probs <- data.frame(specimen_id = ind_col, 
                                       prob = prob_col, 
                                       cluster = cluster_col)
-
+# create supptable
 cluster_wide <- organised_cluster_probs %>%
   pivot_wider(
     names_from = cluster,
