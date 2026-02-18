@@ -6,7 +6,7 @@ library(caret)    # findCorrelation()
 
 
 # load stack
-all_stack <- rast("env_variables/stacks/all_stack.tif")
+all_stack <- rast("iii_extend_of_suitable_habitat/env_variables/stacks/all_stack.tif")
 
 
 ######### collect information about NA/ NaN values
