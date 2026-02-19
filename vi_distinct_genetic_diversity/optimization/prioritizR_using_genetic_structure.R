@@ -39,6 +39,7 @@ p <- problem(
 # find and illustrate solution
 s1 <- solve(p)
 s1$name[s1$solution_1 == 1]
+# "Lagunetas 2" "Aguamansa"   "Cubaba"      "Frontera"
 plot(st_geometry(s1[s1$solution_1 == 1, ]),
      col = "red")
 
