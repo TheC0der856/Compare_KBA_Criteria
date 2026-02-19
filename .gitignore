@@ -12,6 +12,7 @@
 *.cpg
 *.sbn
 *.sbx
+*.xlsx
 *.sr.lock
 # maxent program
 *.bat
