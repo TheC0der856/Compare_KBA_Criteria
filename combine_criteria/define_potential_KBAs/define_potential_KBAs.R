@@ -67,7 +67,7 @@ overlap <- st_intersection(protected_areas, ranges)
 
 # Collection points
 # load collection point data
-occ_data <-  read.csv("C:/Users/Gronefeld/Desktop/Compare_KBA_criteria/iii_extend_of_suitable_habitat/occurrences/Ariagona_margaritae_Alles.csv", sep = ",")
+occ_data <-  read.csv("iii_extend_of_suitable_habitat/occurrences/Ariagona_margaritae_Alles.csv", sep = ",")
 # Extract and clean coordinates 
 # only for rows which are not potential collection points and have exact coordinates
 occ.std <- occ_data[!is.na(occ_data$Specimen_ID) & occ_data$Specimen_ID != "", c("WGS84_X", "WGS84_Y")]
