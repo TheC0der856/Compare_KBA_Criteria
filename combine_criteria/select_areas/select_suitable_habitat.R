@@ -29,4 +29,4 @@ kba_coverage <- potential_KBAs %>%
 selected_KBAs <- kba_coverage[kba_coverage$percent_covered > 10, ]
 
 # save KBAs selected with range:
-st_write(selected_KBAs, "combine_criteria/select_areas/selected_KBAs_with_suitable_habitat.shp")
+st_write(selected_KBAs, "combine_criteria/select_areas/selected_KBAs_with_suitable_habitat.shp", append=FALSE)
