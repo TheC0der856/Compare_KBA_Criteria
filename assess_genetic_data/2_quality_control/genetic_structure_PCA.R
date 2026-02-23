@@ -30,7 +30,7 @@ runPLINK <- function(PLINKoptions = "") {
 # copy .structure file and change file ending into .stru
 # delete the first row
 # load genetic data
-genetic_info <- read.structure("vi_distinct_genetic_diversity/2_quality_control/dataset/populations_cleaned.stru") 
+genetic_info <- read.structure("assess_genetic_data/2_quality_control/dataset/populations_cleaned.stru") 
 345
 5237 
 1
@@ -56,18 +56,18 @@ pop(genetic_info ) <- as.factor(population)
 
 
 # path were plink files should be saved
-setwd("vi_distinct_genetic_diversity/plink_data")
+setwd("assess_genetic_data/2_quality_control/plink_data")
 
 # convert files into plink format
 genomic_converter(genetic_info, output= "plink")
 
 # rename files
 list.files()
-file.rename("03_radiator_genomic_converter_20251006@1456", "genetic_structure")
+file.rename("01_radiator_genomic_converter_20260223@1131", "genetic_structure")
 setwd("genetic_structure")
 list.files()
-file.rename("radiator_data_20251006@1456.tfam", "genetic_structure.tfam")
-file.rename("radiator_data_20251006@1456.tped", "genetic_structure.tped")
+file.rename("radiator_data_20260223@1131.tfam", "genetic_structure.tfam")
+file.rename("radiator_data_20260223@1131.tped", "genetic_structure.tped")
 
 # create directory for results
 dir.create("results")
@@ -81,7 +81,10 @@ eigen_percent <- round((eigenValues/ (sum(eigenValues))*100), 2)
 # create a plot
 PCAplot <- ggplot(data = eigenVectors)  +
   geom_point(mapping = aes(x = X3, y = X4, color = factor(X1), shape = factor(X1)), size = 2, show.legend = TRUE) +
-  scale_color_manual(values = c("east_Tenerife" = "goldenrod", "west_Tenerife" = "cadetblue", "La_Gomera" = "palegreen", "El_Hierro" = "tan4")) + 
+  scale_color_manual(values = c("east_Tenerife" = "cadetblue",
+                                "west_Tenerife" = "goldenrod",
+                                "La_Gomera" = "palegreen", 
+                                "El_Hierro" = "tan4")) + 
   scale_shape_manual(values = c("east_Tenerife" = 16, "west_Tenerife" = 16, "La_Gomera" = 16, "El_Hierro" = 16 )) +                     
   geom_hline(yintercept = 0, linetype = "dotted") +
   geom_vline(xintercept = 0, linetype = "dotted") + 
