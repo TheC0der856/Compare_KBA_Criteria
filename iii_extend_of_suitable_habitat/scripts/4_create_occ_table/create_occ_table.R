@@ -3,7 +3,7 @@ library(terra)
 
 # Load data
 filtered_stack <- rast("env_variables/stacks/stack_filtered6.tif")
-occ_data <- read.csv("occurences/Ariagona_margaritae_Alles.csv", sep = ",")  
+occ_data <- read.csv("iii_extend_of_suitable_habitat/occurrences/Ariagona_margaritae_Alles.csv", sep = ",")  
 
 
 #filter data for 2023
