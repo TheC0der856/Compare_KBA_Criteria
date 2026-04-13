@@ -5,9 +5,9 @@
 
 library(prioritizr)
 library(sf)
-library(terra)
+#library(terra)
 library(Rsymphony)
-library(dplyr)
+#library(dplyr)
 
 # set seed for reproducibility
 set.seed(500)
