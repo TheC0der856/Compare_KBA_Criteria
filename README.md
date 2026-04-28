@@ -17,7 +17,7 @@ First of all the raw reads were processed in assess_genetic_data/1_stacks. In as
 
 
 
-#(i) mature individuals: 
+##(i) mature individuals: 
 
 The analysis is based on a single script, which can be found in: i_number_of_mature_individuals. 
 
